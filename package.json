@@ -1,7 +1,6 @@
 {
-  "name": "@twexdo_wv/react-planner",
+  "name": "@twexdo_wv/planner",
   "version": "2.0.6",
-  "description": "react-planner is a React Component for plans design. Draw a 2D floorplan and navigate it in 3D mode.",
   "main": "lib/index.js",
   "module": "lib/index.js",
   "jsnext:main": "es/index.js",
@@ -19,51 +18,9 @@
     "postpublish": "npm run website-update",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cvdlab/react-planner.git"
-  },
-  "keywords": [
-    "floorplanner",
-    "plan",
-    "svg",
-    "3d",
-    "home design",
-    "interior design",
-    "react",
-    "react-component",
-    "react.js",
-    "ui",
-    "interface",
-    "component"
-  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cvdlab/react-planner/issues"
-  },
-  "maintainers": [
-    {
-      "url": "https://github.com/chrvadala",
-      "name": "chrvadala"
-    },
-    {
-      "url": "https://github.com/danilosalvati",
-      "name": "danilosalvati"
-    },
-    {
-      "url": "https://github.com/enricomarino",
-      "name": "enricomarino"
-    },
-    {
-      "url": "https://github.com/federicospini",
-      "name": "federicospini"
-    },
-    {
-      "url": "https://github.com/alessiocarrafa",
-      "name": "alessiocarrafa"
-    }
-  ],
-  "homepage": "https://github.com/cvdlab/react-planner#readme",
+
   "dependencies": {
     "@mapbox/react-range": "0.0.7",
     "area-polygon": "1.0.1",
