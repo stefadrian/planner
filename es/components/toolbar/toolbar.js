@@ -1,6 +1,6 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8,12 +8,41 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { MdUndo } from "react-icons/md";
-import * as SharedStyle from "../../shared-style";
-import If from "../../utils/react-if";
+import PropTypes from "prop-types";
+import { MdSettings, MdUndo, MdDirectionsRun } from "react-icons/md";
+import { FaFile, FaMousePointer, FaPlus } from "react-icons/fa";
 import ToolbarButton from "./toolbar-button";
+import ToolbarSaveButton from "./toolbar-save-button";
+import ToolbarLoadButton from "./toolbar-load-button";
+import If from "../../utils/react-if";
+import { MODE_IDLE, MODE_3D_VIEW, MODE_3D_FIRST_PERSON, MODE_VIEWING_CATALOG, MODE_CONFIGURING_PROJECT } from "../../constants";
+import * as SharedStyle from "../../shared-style";
+
+var iconTextStyle = {
+  fontSize: "19px",
+  textDecoration: "none",
+  fontWeight: "bold",
+  margin: "0px",
+  userSelect: "none"
+};
+
+var Icon2D = function Icon2D(_ref) {
+  var style = _ref.style;
+  return React.createElement(
+    "p",
+    { style: _extends({}, iconTextStyle, style) },
+    "2D"
+  );
+};
+var Icon3D = function Icon3D(_ref2) {
+  var style = _ref2.style;
+  return React.createElement(
+    "p",
+    { style: _extends({}, iconTextStyle, style) },
+    "3D"
+  );
+};
 
 var ASIDE_STYLE = {
   backgroundColor: SharedStyle.PRIMARY_COLOR.main,
@@ -76,7 +105,21 @@ var Toolbar = function (_Component) {
       var alterate = state.get("alterate");
       var alterateColor = alterate ? SharedStyle.MATERIAL_COLORS[500].orange : "";
 
-      var sorter = [
+      var sorter = [{
+        index: 0,
+        condition: allowProjectFileSupport,
+        dom: React.createElement(
+          ToolbarButton,
+          {
+            active: false,
+            tooltip: translator.t("New project"),
+            onClick: function onClick(event) {
+              return confirm(translator.t("Would you want to start a new Project?")) ? projectActions.newProject() : null;
+            }
+          },
+          React.createElement(FaFile, null)
+        )
+      },
       // {
       //   index: 1,
       //   condition: allowProjectFileSupport,
@@ -86,6 +129,57 @@ var Toolbar = function (_Component) {
       //   index: 2,
       //   condition: allowProjectFileSupport,
       //   dom: <ToolbarLoadButton state={state} />,
+      // },
+      {
+        index: 3,
+        condition: true,
+        dom: React.createElement(
+          ToolbarButton,
+          {
+            active: [MODE_VIEWING_CATALOG].includes(mode),
+            tooltip: translator.t("Open catalog"),
+            onClick: function onClick(event) {
+              return projectActions.openCatalog();
+            }
+          },
+          React.createElement(FaPlus, null)
+        )
+      },
+      // {
+      //   index: 4,
+      //   condition: true,
+      //   dom: (
+      //     <ToolbarButton
+      //       active={[MODE_3D_VIEW].includes(mode)}
+      //       tooltip={translator.t("3D View")}
+      //       onClick={(event) => viewer3DActions.selectTool3DView()}
+      //     >
+      //       <Icon3D />
+      //     </ToolbarButton>
+      //   ),
+      // },
+      {
+        index: 5,
+        condition: true,
+        dom: React.createElement(
+          ToolbarButton,
+          {
+            active: [MODE_IDLE].includes(mode),
+            tooltip: translator.t("2D View"),
+            onClick: function onClick(event) {
+              return projectActions.setMode(MODE_IDLE);
+            }
+          },
+          [MODE_3D_FIRST_PERSON, MODE_3D_VIEW].includes(mode) ? React.createElement(Icon2D, { style: { color: alterateColor } }) : React.createElement(FaMousePointer, { style: { color: alterateColor } })
+        )
+      },
+      // {
+      //   index: 6, condition: true, dom: <ToolbarButton
+      //     active={[MODE_3D_FIRST_PERSON].includes(mode)}
+      //     tooltip={translator.t('3D First Person')}
+      //     onClick={event => viewer3DActions.selectTool3DFirstPerson()}>
+      //     <MdDirectionsRun />
+      //   </ToolbarButton>
       // },
       {
         index: 7,
@@ -100,6 +194,20 @@ var Toolbar = function (_Component) {
             }
           },
           React.createElement(MdUndo, null)
+        )
+      }, {
+        index: 8,
+        condition: true,
+        dom: React.createElement(
+          ToolbarButton,
+          {
+            active: [MODE_CONFIGURING_PROJECT].includes(mode),
+            tooltip: translator.t("Configure project"),
+            onClick: function onClick(event) {
+              return projectActions.openProjectConfigurator();
+            }
+          },
+          React.createElement(MdSettings, null)
         )
       }];
 

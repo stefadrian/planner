@@ -28,8 +28,8 @@ var FooterBar = FooterBarComponents.FooterBar;
 
 
 var toolbarW = 50;
-var sidebarW = 0; //300
-var footerBarH = 0; //20
+var sidebarW = 300;
+var footerBarH = 20;
 
 var wrapperStyle = {
   display: "flex",
@@ -119,7 +119,17 @@ var ReactPlanner = function (_Component) {
           onWheel: function onWheel(event) {
             return event.preventDefault();
           }
-        }))
+        })),
+        React.createElement(Sidebar, _extends({
+          width: sidebarW,
+          height: sidebarH,
+          state: extractedState
+        }, props)),
+        React.createElement(FooterBar, _extends({
+          width: width,
+          height: footerBarH,
+          state: extractedState
+        }, props))
       );
     }
   }]);

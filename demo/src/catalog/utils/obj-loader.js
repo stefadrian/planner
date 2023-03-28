@@ -1,7 +1,7 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  */
-var THREE = window?.THREE || require("three");
+var THREE = window.THREE || require("three");
 let OBJLoader;
 OBJLoader = (function () {
   // o object_name | g group_name
