@@ -1,20 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {FaSave as IconSave} from 'react-icons/fa';
-import ToolbarButton from './toolbar-button';
-import {browserDownload}  from '../../utils/browser';
-import { Project } from '../../class/export';
+import React from "react";
+import PropTypes from "prop-types";
+import { FaSave as IconSave } from "react-icons/fa";
+import ToolbarButton from "./toolbar-button";
+import { browserDownload } from "../../utils/browser";
+import { Project } from "../../class/export";
 
-export default function ToolbarSaveButton({state}, {translator}) {
-
-  let saveProjectToFile = e => {
+export default function ToolbarSaveButton(
+  { state },
+  { translator },
+  onSaveAction
+) {
+  let saveProjectToFile = (e) => {
     e.preventDefault();
-    state = Project.unselectAll( state ).updatedState;
-    browserDownload(state.get('scene').toJS());
+    state = Project.unselectAll(state).updatedState;
+    if (onSaveAction) {
+      onSaveAction(state.get("scene").toJS());
+    } else browserDownload();
   };
 
   return (
-    <ToolbarButton active={false} tooltip={translator.t('Save project')} onClick={saveProjectToFile}>
+    <ToolbarButton
+      active={false}
+      tooltip={translator.t("Save project")}
+      onClick={saveProjectToFile}
+    >
       <IconSave />
     </ToolbarButton>
   );

@@ -8,56 +8,56 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import If from '../../utils/react-if';
-import FooterToggleButton from './footer-toggle-button';
-import FooterContentButton from './footer-content-button';
-import { SNAP_POINT, SNAP_LINE, SNAP_SEGMENT, SNAP_GRID, SNAP_GUIDE } from '../../utils/snap';
-import { MODE_SNAPPING } from '../../constants';
-import * as SharedStyle from '../../shared-style';
-import { MdAddCircle, MdWarning } from 'react-icons/md';
-import { VERSION } from '../../version';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import If from "../../utils/react-if";
+import FooterToggleButton from "./footer-toggle-button";
+import FooterContentButton from "./footer-content-button";
+import { SNAP_POINT, SNAP_LINE, SNAP_SEGMENT, SNAP_GRID, SNAP_GUIDE } from "../../utils/snap";
+import { MODE_SNAPPING } from "../../constants";
+import * as SharedStyle from "../../shared-style";
+import { MdAddCircle, MdWarning } from "react-icons/md";
+import { VERSION } from "../../version";
 
 var footerBarStyle = {
-  position: 'absolute',
+  position: "absolute",
   bottom: 0,
-  lineHeight: '14px',
-  fontSize: '12px',
+  lineHeight: "14px",
+  fontSize: "12px",
   color: SharedStyle.COLORS.white,
   backgroundColor: SharedStyle.SECONDARY_COLOR.alt,
-  padding: '3px 1em',
+  padding: "3px 1em",
   margin: 0,
-  boxSizing: 'border-box',
-  cursor: 'default',
-  userSelect: 'none',
-  zIndex: '9001'
+  boxSizing: "border-box",
+  cursor: "default",
+  userSelect: "none",
+  zIndex: "9001"
 };
 
 export var leftTextStyle = {
-  position: 'relative',
-  borderRight: '1px solid #FFF',
-  float: 'left',
-  padding: '0 1em',
-  display: 'inline-block'
+  position: "relative",
+  borderRight: "1px solid #FFF",
+  float: "left",
+  padding: "0 1em",
+  display: "inline-block"
 };
 
 export var rightTextStyle = {
-  position: 'relative',
-  borderLeft: '1px solid #FFF',
-  float: 'right',
-  padding: '0 1em',
-  display: 'inline-block'
+  position: "relative",
+  borderLeft: "1px solid #FFF",
+  float: "right",
+  padding: "0 1em",
+  display: "inline-block"
 };
 
 var coordStyle = {
-  display: 'inline-block',
-  width: '6em',
+  display: "inline-block",
+  width: "6em",
   margin: 0,
   padding: 0
 };
 
-var appMessageStyle = { borderBottom: '1px solid #555', lineHeight: '1.5em' };
+var appMessageStyle = { borderBottom: "1px solid #555", lineHeight: "1.5em" };
 
 var FooterBar = function (_Component) {
   _inherits(FooterBar, _Component);
@@ -72,7 +72,7 @@ var FooterBar = function (_Component) {
   }
 
   _createClass(FooterBar, [{
-    key: 'render',
+    key: "render",
     value: function render() {
       var _props = this.props,
           globalState = _props.state,
@@ -82,35 +82,38 @@ var FooterBar = function (_Component) {
           translator = _context.translator,
           projectActions = _context.projectActions;
 
-      var _globalState$get$toJS = globalState.get('mouse').toJS(),
+      var _globalState$get$toJS = globalState.get("mouse").toJS(),
           x = _globalState$get$toJS.x,
           y = _globalState$get$toJS.y;
 
-      var zoom = globalState.get('zoom');
-      var mode = globalState.get('mode');
+      var zoom = globalState.get("zoom");
+      var mode = globalState.get("mode");
 
-      var errors = globalState.get('errors').toArray();
+      var errors = globalState.get("errors").toArray();
       var errorsJsx = errors.map(function (err, ind) {
         return React.createElement(
-          'div',
+          "div",
           { key: ind, style: appMessageStyle },
-          '[ ',
+          "[ ",
           new Date(err.date).toLocaleString(),
-          ' ] ',
+          " ] ",
           err.error
         );
       });
       var errorLableStyle = errors.length ? { color: SharedStyle.MATERIAL_COLORS[500].red } : {};
-      var errorIconStyle = errors.length ? { transform: 'rotate(45deg)', color: SharedStyle.MATERIAL_COLORS[500].red } : { transform: 'rotate(45deg)' };
+      var errorIconStyle = errors.length ? {
+        transform: "rotate(45deg)",
+        color: SharedStyle.MATERIAL_COLORS[500].red
+      } : { transform: "rotate(45deg)" };
 
-      var warnings = globalState.get('warnings').toArray();
+      var warnings = globalState.get("warnings").toArray();
       var warningsJsx = warnings.map(function (warn, ind) {
         return React.createElement(
-          'div',
+          "div",
           { key: ind, style: appMessageStyle },
-          '[ ',
+          "[ ",
           new Date(warn.date).toLocaleString(),
-          ' ] ',
+          " ] ",
           warn.warning
         );
       });
@@ -122,36 +125,36 @@ var FooterBar = function (_Component) {
       };
 
       return React.createElement(
-        'div',
+        "div",
         { style: _extends({}, footerBarStyle, { width: width, height: height }) },
         React.createElement(
           If,
           { condition: MODE_SNAPPING.includes(mode) },
           React.createElement(
-            'div',
+            "div",
             { style: leftTextStyle },
             React.createElement(
-              'div',
-              { title: translator.t('Mouse X Coordinate'), style: coordStyle },
-              'X : ',
+              "div",
+              { title: translator.t("Mouse X Coordinate"), style: coordStyle },
+              "X : ",
               x.toFixed(3)
             ),
             React.createElement(
-              'div',
-              { title: translator.t('Mouse Y Coordinate'), style: coordStyle },
-              'Y : ',
+              "div",
+              { title: translator.t("Mouse Y Coordinate"), style: coordStyle },
+              "Y : ",
               y.toFixed(3)
             )
           ),
           React.createElement(
-            'div',
-            { style: leftTextStyle, title: translator.t('Scene Zoom Level') },
-            'Zoom: ',
+            "div",
+            { style: leftTextStyle, title: translator.t("Scene Zoom Level") },
+            "Zoom: ",
             zoom.toFixed(3),
-            'X'
+            "X"
           ),
           React.createElement(
-            'div',
+            "div",
             { style: leftTextStyle },
             React.createElement(FooterToggleButton, {
               state: this.state,
@@ -161,9 +164,9 @@ var FooterBar = function (_Component) {
               toggleOff: function toggleOff() {
                 updateSnapMask({ SNAP_POINT: false });
               },
-              text: 'Snap PT',
+              text: "Snap PT",
               toggleState: globalState.snapMask.get(SNAP_POINT),
-              title: translator.t('Snap to Point')
+              title: translator.t("Snap to Point")
             }),
             React.createElement(FooterToggleButton, {
               state: this.state,
@@ -173,9 +176,9 @@ var FooterBar = function (_Component) {
               toggleOff: function toggleOff() {
                 updateSnapMask({ SNAP_LINE: false });
               },
-              text: 'Snap LN',
+              text: "Snap LN",
               toggleState: globalState.snapMask.get(SNAP_LINE),
-              title: translator.t('Snap to Line')
+              title: translator.t("Snap to Line")
             }),
             React.createElement(FooterToggleButton, {
               state: this.state,
@@ -185,9 +188,9 @@ var FooterBar = function (_Component) {
               toggleOff: function toggleOff() {
                 updateSnapMask({ SNAP_SEGMENT: false });
               },
-              text: 'Snap SEG',
+              text: "Snap SEG",
               toggleState: globalState.snapMask.get(SNAP_SEGMENT),
-              title: translator.t('Snap to Segment')
+              title: translator.t("Snap to Segment")
             }),
             React.createElement(FooterToggleButton, {
               state: this.state,
@@ -197,9 +200,9 @@ var FooterBar = function (_Component) {
               toggleOff: function toggleOff() {
                 updateSnapMask({ SNAP_GRID: false });
               },
-              text: 'Snap GRD',
+              text: "Snap GRD",
               toggleState: globalState.snapMask.get(SNAP_GRID),
-              title: translator.t('Snap to Grid')
+              title: translator.t("Snap to Grid")
             }),
             React.createElement(FooterToggleButton, {
               state: this.state,
@@ -209,9 +212,9 @@ var FooterBar = function (_Component) {
               toggleOff: function toggleOff() {
                 updateSnapMask({ SNAP_GUIDE: false });
               },
-              text: 'Snap GDE',
+              text: "Snap GDE",
               toggleState: globalState.snapMask.get(SNAP_GUIDE),
-              title: translator.t('Snap to Guide')
+              title: translator.t("Snap to Guide")
             })
           )
         ),
@@ -219,15 +222,15 @@ var FooterBar = function (_Component) {
           return React.createElement(Component, { state: state, key: index });
         }),
         this.props.softwareSignature ? React.createElement(
-          'div',
+          "div",
           {
             style: rightTextStyle,
-            title: this.props.softwareSignature + (this.props.softwareSignature.includes('React-Planner') ? '' : ' using React-Planner ' + VERSION)
+            title: this.props.softwareSignature + (this.props.softwareSignature.includes("React-Planner") ? "" : " using React-Planner " + VERSION)
           },
           this.props.softwareSignature
         ) : null,
         React.createElement(
-          'div',
+          "div",
           { style: rightTextStyle },
           React.createElement(FooterContentButton, {
             state: this.state,
@@ -235,7 +238,7 @@ var FooterBar = function (_Component) {
             iconStyle: errorIconStyle,
             text: errors.length.toString(),
             textStyle: errorLableStyle,
-            title: 'Errors [ ' + errors.length + ' ]',
+            title: "Errors [ " + errors.length + " ]",
             titleStyle: errorLableStyle,
             content: [errorsJsx]
           }),
@@ -245,7 +248,7 @@ var FooterBar = function (_Component) {
             iconStyle: warningIconStyle,
             text: warnings.length.toString(),
             textStyle: warningLableStyle,
-            title: 'Warnings [ ' + warnings.length + ' ]',
+            title: "Warnings [ " + warnings.length + " ]",
             titleStyle: warningLableStyle,
             content: [warningsJsx]
           })

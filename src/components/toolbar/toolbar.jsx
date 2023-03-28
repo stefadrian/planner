@@ -94,11 +94,13 @@ export default class Toolbar extends Component {
           </ToolbarButton>
         ),
       },
-      // {
-      //   index: 1,
-      //   condition: allowProjectFileSupport,
-      //   dom: <ToolbarSaveButton state={state} />,
-      // },
+      {
+        index: 1,
+        condition: allowProjectFileSupport,
+        dom: (
+          <ToolbarSaveButton state={state} onSaveAction={props.onSaveAction} />
+        ),
+      },
       // {
       //   index: 2,
       //   condition: allowProjectFileSupport,
