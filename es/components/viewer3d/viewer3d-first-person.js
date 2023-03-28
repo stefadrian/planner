@@ -8,16 +8,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import * as Three from 'three';
-import { parseData, updateScene } from './scene-creator';
-import { disposeScene } from './three-memory-cleaner';
-import diff from 'immutablediff';
+import React from "react";
+import PropTypes from "prop-types";
+import ReactDOM from "react-dom";
+import * as Three from "three";
+import { parseData, updateScene } from "./scene-creator";
+import { disposeScene } from "./three-memory-cleaner";
+import diff from "immutablediff";
 import { initPointerLock } from "./pointer-lock-navigation";
 import { firstPersonOnKeyDown, firstPersonOnKeyUp } from "./libs/first-person-controls";
-import * as SharedStyle from '../../shared-style';
+import * as SharedStyle from "../../shared-style";
 
 var Viewer3DFirstPerson = function (_React$Component) {
     _inherits(Viewer3DFirstPerson, _React$Component);
@@ -36,7 +36,7 @@ var Viewer3DFirstPerson = function (_React$Component) {
     }
 
     _createClass(Viewer3DFirstPerson, [{
-        key: 'componentDidMount',
+        key: "componentDidMount",
         value: function componentDidMount() {
             var _this2 = this;
 
@@ -144,15 +144,19 @@ var Viewer3DFirstPerson = function (_React$Component) {
                 canJump = moveResult.canJump;
             };
 
-            document.addEventListener('keydown', this.keyDownEvent);
-            document.addEventListener('keyup', this.keyUpEvent);
+            document.addEventListener("keydown", this.keyDownEvent);
+            document.addEventListener("keyup", this.keyUpEvent);
 
             // Add a pointer to the scene
 
             var pointer = new Three.Object3D();
-            pointer.name = 'pointer';
+            pointer.name = "pointer";
 
-            var pointerMaterial = new Three.MeshBasicMaterial({ depthTest: false, depthWrite: false, color: SharedStyle.COLORS.black });
+            var pointerMaterial = new Three.MeshBasicMaterial({
+                depthTest: false,
+                depthWrite: false,
+                color: SharedStyle.COLORS.black
+            });
             var pointerGeometry1 = new Three.Geometry();
             pointerGeometry1.vertices.push(new Three.Vector3(-10, 0, 0));
             pointerGeometry1.vertices.push(new Three.Vector3(10, 0, 0));
@@ -184,7 +188,6 @@ var Viewer3DFirstPerson = function (_React$Component) {
 
             camera.add(pointer); // Add the pointer to the camera
 
-
             // OBJECT PICKING
             var toIntersect = [this.planData.plan];
 
@@ -192,7 +195,6 @@ var Viewer3DFirstPerson = function (_React$Component) {
             var raycaster = new Three.Raycaster();
 
             this.firstPersonMouseDown = function (event) {
-
                 // First of all I check if controls are enabled
 
                 if (_this2.controls.enabled) {
@@ -213,16 +215,15 @@ var Viewer3DFirstPerson = function (_React$Component) {
                 }
             };
 
-            document.addEventListener('mousedown', this.firstPersonMouseDown, false);
+            document.addEventListener("mousedown", this.firstPersonMouseDown, false);
 
-            this.renderer.domElement.style.display = 'block';
+            this.renderer.domElement.style.display = "block";
 
             // add the output of the renderer to the html element
             canvasWrapper.appendChild(this.renderer.domElement);
             this.renderer.autoClear = false;
 
             var render = function render() {
-
                 if (!_this2.stopRendering) {
                     yInitialPosition = _this2.planData.boundingBox.min.y + humanHeight;
 
@@ -279,17 +280,17 @@ var Viewer3DFirstPerson = function (_React$Component) {
             // this.planData = planData;
         }
     }, {
-        key: 'componentWillUnmount',
+        key: "componentWillUnmount",
         value: function componentWillUnmount() {
             this.stopRendering = true;
             this.renderer.autoClear = true;
-            document.removeEventListener('mousedown', this.firstPersonMouseDown);
-            document.removeEventListener('keydown', this.keyDownEvent);
-            document.removeEventListener('keyup', this.keyUpEvent);
-            document.removeEventListener('pointerlockchange', this.pointerlockChangeEvent);
-            document.removeEventListener('mozpointerlockchange', this.pointerlockChangeEvent);
-            document.removeEventListener('webkitpointerlockchange', this.pointerlockChangeEvent);
-            this.renderer.domElement.removeEventListener('click', this.requestPointerLockEvent);
+            document.removeEventListener("mousedown", this.firstPersonMouseDown);
+            document.removeEventListener("keydown", this.keyDownEvent);
+            document.removeEventListener("keyup", this.keyUpEvent);
+            document.removeEventListener("pointerlockchange", this.pointerlockChangeEvent);
+            document.removeEventListener("mozpointerlockchange", this.pointerlockChangeEvent);
+            document.removeEventListener("webkitpointerlockchange", this.pointerlockChangeEvent);
+            this.renderer.domElement.removeEventListener("click", this.requestPointerLockEvent);
 
             disposeScene(this.scene3D);
 
@@ -300,7 +301,7 @@ var Viewer3DFirstPerson = function (_React$Component) {
             this.renderer.renderLists.dispose();
         }
     }, {
-        key: 'componentWillReceiveProps',
+        key: "componentWillReceiveProps",
         value: function componentWillReceiveProps(nextProps) {
             var width = nextProps.width,
                 height = nextProps.height;
@@ -338,7 +339,7 @@ var Viewer3DFirstPerson = function (_React$Component) {
             renderer.render(sceneOnTop, camera); // render scene 2
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
             return React.createElement("div", {
                 ref: "canvasWrapper"
