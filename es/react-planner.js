@@ -94,12 +94,27 @@ var ReactPlanner = function (_Component) {
           height = _props2.height,
           state = _props2.state,
           stateExtractor = _props2.stateExtractor,
-          props = _objectWithoutProperties(_props2, ["width", "height", "state", "stateExtractor"]);
+          _props2$disableSideBa = _props2.disableSideBar,
+          disableSideBar = _props2$disableSideBa === undefined ? false : _props2$disableSideBa,
+          _props2$disableFooter = _props2.disableFooterBar,
+          disableFooterBar = _props2$disableFooter === undefined ? false : _props2$disableFooter,
+          props = _objectWithoutProperties(_props2, ["width", "height", "state", "stateExtractor", "disableSideBar", "disableFooterBar"]);
 
-      var contentW = width - toolbarW - sidebarW;
-      var toolbarH = height - footerBarH;
-      var contentH = height - footerBarH;
-      var sidebarH = height - footerBarH;
+      var contentW = width - toolbarW;
+
+      if (!disableSideBar) {
+        contentW -= sidebarW;
+      }
+
+      var toolbarH = height;
+      var contentH = height;
+      var sidebarH = height;
+
+      if (!disableFooterBar) {
+        toolbarH -= footerBarH;
+        contentH -= footerBarH;
+        sidebarH -= footerBarH;
+      }
 
       var extractedState = stateExtractor(state);
 
@@ -120,12 +135,12 @@ var ReactPlanner = function (_Component) {
             return event.preventDefault();
           }
         })),
-        React.createElement(Sidebar, _extends({
+        !disableSideBar && React.createElement(Sidebar, _extends({
           width: sidebarW,
           height: sidebarH,
           state: extractedState
         }, props)),
-        React.createElement(FooterBar, _extends({
+        !disableFooterBar && React.createElement(FooterBar, _extends({
           width: width,
           height: footerBarH,
           state: extractedState

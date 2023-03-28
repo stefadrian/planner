@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8,15 +8,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import * as Three from 'three';
-import { parseData, updateScene } from './scene-creator';
-import { disposeScene } from './three-memory-cleaner';
-import OrbitControls from './libs/orbit-controls';
-import diff from 'immutablediff';
-import * as SharedStyle from '../../shared-style';
+import React from "react";
+import PropTypes from "prop-types";
+import ReactDOM from "react-dom";
+import * as Three from "three";
+import { parseData, updateScene } from "./scene-creator";
+import { disposeScene } from "./three-memory-cleaner";
+import OrbitControls from "./libs/orbit-controls";
+import diff from "immutablediff";
+import * as SharedStyle from "../../shared-style";
 
 var Scene3DViewer = function (_React$Component) {
     _inherits(Scene3DViewer, _React$Component);
@@ -37,7 +37,7 @@ var Scene3DViewer = function (_React$Component) {
     }
 
     _createClass(Scene3DViewer, [{
-        key: 'componentDidMount',
+        key: "componentDidMount",
         value: function componentDidMount() {
             var _this2 = this;
 
@@ -67,7 +67,7 @@ var Scene3DViewer = function (_React$Component) {
             scene3D.add(planData.grid);
 
             var aspectRatio = this.width / this.height;
-            var camera = new Three.PerspectiveCamera(45, aspectRatio, 1, 300000);
+            var camera = new Three.PerspectiveCamera(45, aspectRatio, 1, 3000);
 
             scene3D.add(camera);
 
@@ -89,7 +89,7 @@ var Scene3DViewer = function (_React$Component) {
 
             // Add another light
 
-            var spotLight1 = new Three.SpotLight(SharedStyle.COLORS.white, 0.30);
+            var spotLight1 = new Three.SpotLight(SharedStyle.COLORS.white, 0.3);
             spotLight1.position.set(cameraPositionX, cameraPositionY, cameraPositionZ);
             scene3D.add(spotLight1);
 
@@ -110,7 +110,6 @@ var Scene3DViewer = function (_React$Component) {
                 mouse.y = -(event.offsetY / _this2.height) * 2 + 1;
 
                 if (Math.abs(mouse.x - _this2.lastMousePosition.x) <= 0.02 && Math.abs(mouse.y - _this2.lastMousePosition.y) <= 0.02) {
-
                     raycaster.setFromCamera(mouse, camera);
                     var intersects = raycaster.intersectObjects(toIntersect, true);
 
@@ -122,9 +121,9 @@ var Scene3DViewer = function (_React$Component) {
                 }
             };
 
-            this.renderer.domElement.addEventListener('mousedown', this.mouseDownEvent);
-            this.renderer.domElement.addEventListener('mouseup', this.mouseUpEvent);
-            this.renderer.domElement.style.display = 'block';
+            this.renderer.domElement.addEventListener("mousedown", this.mouseDownEvent);
+            this.renderer.domElement.addEventListener("mouseup", this.mouseUpEvent);
+            this.renderer.domElement.style.display = "block";
 
             // add the output of the renderer to the html element
             canvasWrapper.appendChild(this.renderer.domElement);
@@ -132,7 +131,7 @@ var Scene3DViewer = function (_React$Component) {
             // create orbit controls
             var orbitController = new OrbitControls(camera, this.renderer.domElement);
             var spotLightTarget = new Three.Object3D();
-            spotLightTarget.name = 'spotLightTarget';
+            spotLightTarget.name = "spotLightTarget";
             spotLightTarget.position.set(orbitController.target.x, orbitController.target.y, orbitController.target.z);
             scene3D.add(spotLightTarget);
             spotLight1.target = spotLightTarget;
@@ -160,14 +159,14 @@ var Scene3DViewer = function (_React$Component) {
             this.planData = planData;
         }
     }, {
-        key: 'componentWillUnmount',
+        key: "componentWillUnmount",
         value: function componentWillUnmount() {
             cancelAnimationFrame(this.renderingID);
 
             this.orbitControls.dispose();
 
-            this.renderer.domElement.removeEventListener('mousedown', this.mouseDownEvent);
-            this.renderer.domElement.removeEventListener('mouseup', this.mouseUpEvent);
+            this.renderer.domElement.removeEventListener("mousedown", this.mouseDownEvent);
+            this.renderer.domElement.removeEventListener("mouseup", this.mouseUpEvent);
 
             disposeScene(this.scene3D);
             this.scene3D.remove(this.planData.plan);
@@ -180,7 +179,7 @@ var Scene3DViewer = function (_React$Component) {
             this.renderer.renderLists.dispose();
         }
     }, {
-        key: 'componentWillReceiveProps',
+        key: "componentWillReceiveProps",
         value: function componentWillReceiveProps(nextProps) {
             var width = nextProps.width,
                 height = nextProps.height;
@@ -209,9 +208,9 @@ var Scene3DViewer = function (_React$Component) {
             this.renderer.setSize(width, height);
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
-            return React.createElement('div', { ref: 'canvasWrapper' });
+            return React.createElement("div", { ref: "canvasWrapper" });
         }
     }]);
 

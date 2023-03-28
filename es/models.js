@@ -8,9 +8,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import { Record, List, Map, fromJS } from 'immutable';
-import { MODE_IDLE } from './constants';
-import { SNAP_MASK } from './utils/snap';
+import { Record, List, Map, fromJS } from "immutable";
+import { MODE_IDLE } from "./constants";
+import { SNAP_MASK } from "./utils/snap";
 
 var safeLoadMapList = function safeLoadMapList(mapList, Model, defaultMap) {
   return mapList ? new Map(mapList).map(function (m) {
@@ -33,26 +33,26 @@ export var Grid = function (_Record) {
 
   return Grid;
 }(Record({
-  id: '',
-  type: '',
+  id: "",
+  type: "",
   properties: Map()
-}, 'Grid'));
+}, "Grid"));
 
 export var DefaultGrids = new Map({
-  'h1': new Grid({
-    id: 'h1',
-    type: 'horizontal-streak',
+  h1: new Grid({
+    id: "h1",
+    type: "horizontal-streak",
     properties: {
       step: 20,
-      colors: ['#808080', '#ddd', '#ddd', '#ddd', '#ddd']
+      colors: ["#808080", "#ddd", "#ddd", "#ddd", "#ddd"]
     }
   }),
-  'v1': new Grid({
-    id: 'v1',
-    type: 'vertical-streak',
+  v1: new Grid({
+    id: "v1",
+    type: "vertical-streak",
     properties: {
       step: 20,
-      colors: ['#808080', '#ddd', '#ddd', '#ddd', '#ddd']
+      colors: ["#808080", "#ddd", "#ddd", "#ddd", "#ddd"]
     }
   })
 });
@@ -81,13 +81,13 @@ export var ElementsSet = function (_Record2) {
   holes: new List(),
   areas: new List(),
   items: new List()
-}, 'ElementsSet'));
+}, "ElementsSet"));
 
 var sharedAttributes = {
-  id: '',
-  type: '',
-  prototype: '',
-  name: '',
+  id: "",
+  type: "",
+  prototype: "",
+  name: "",
   misc: new Map(),
   selected: false,
   properties: new Map(),
@@ -112,10 +112,10 @@ export var Vertex = function (_Record3) {
 }(Record(_extends({}, sharedAttributes, {
   x: -1,
   y: -1,
-  prototype: 'vertices',
+  prototype: "vertices",
   lines: new List(),
   areas: new List()
-}), 'Vertex'));
+}), "Vertex"));
 
 export var Line = function (_Record4) {
   _inherits(Line, _Record4);
@@ -134,10 +134,10 @@ export var Line = function (_Record4) {
 
   return Line;
 }(Record(_extends({}, sharedAttributes, {
-  prototype: 'lines',
+  prototype: "lines",
   vertices: new List(),
   holes: new List()
-}), 'Line'));
+}), "Line"));
 
 export var Hole = function (_Record5) {
   _inherits(Hole, _Record5);
@@ -154,10 +154,10 @@ export var Hole = function (_Record5) {
 
   return Hole;
 }(Record(_extends({}, sharedAttributes, {
-  prototype: 'holes',
+  prototype: "holes",
   offset: -1,
-  line: ''
-}), 'Hole'));
+  line: ""
+}), "Hole"));
 
 export var Area = function (_Record6) {
   _inherits(Area, _Record6);
@@ -175,10 +175,10 @@ export var Area = function (_Record6) {
 
   return Area;
 }(Record(_extends({}, sharedAttributes, {
-  prototype: 'areas',
+  prototype: "areas",
   vertices: new List(),
   holes: new List()
-}), 'Area'));
+}), "Area"));
 
 export var Item = function (_Record7) {
   _inherits(Item, _Record7);
@@ -195,11 +195,11 @@ export var Item = function (_Record7) {
 
   return Item;
 }(Record(_extends({}, sharedAttributes, {
-  prototype: 'items',
+  prototype: "items",
   x: 0,
   y: 0,
   rotation: 0
-}), 'Item'));
+}), "Item"));
 
 export var Layer = function (_Record8) {
   _inherits(Layer, _Record8);
@@ -221,11 +221,11 @@ export var Layer = function (_Record8) {
 
   return Layer;
 }(Record({
-  id: '',
+  id: "",
   altitude: 0,
   order: 0,
   opacity: 1,
-  name: '',
+  name: "",
   visible: true,
   vertices: new Map(),
   lines: new Map(),
@@ -233,7 +233,7 @@ export var Layer = function (_Record8) {
   areas: new Map(),
   items: new Map(),
   selected: new ElementsSet()
-}, 'Layer'));
+}, "Layer"));
 
 export var Group = function (_Record9) {
   _inherits(Group, _Record9);
@@ -251,15 +251,15 @@ export var Group = function (_Record9) {
 
   return Group;
 }(Record(_extends({}, sharedAttributes, {
-  prototype: 'groups',
+  prototype: "groups",
   x: 0,
   y: 0,
   rotation: 0,
   elements: new Map()
-}), 'Group'));
+}), "Group"));
 
 export var DefaultLayers = new Map({
-  'layer-1': new Layer({ id: 'layer-1', name: 'default' })
+  "layer-1": new Layer({ id: "layer-1", name: "default" })
 });
 
 export var Scene = function (_Record10) {
@@ -277,22 +277,26 @@ export var Scene = function (_Record10) {
       selectedLayer: layers.first().id,
       groups: safeLoadMapList(json.groups || {}, Group),
       meta: json.meta ? fromJS(json.meta) : new Map(),
-      guides: json.guides ? fromJS(json.guides) : new Map({ horizontal: new Map(), vertical: new Map(), circular: new Map() })
+      guides: json.guides ? fromJS(json.guides) : new Map({
+        horizontal: new Map(),
+        vertical: new Map(),
+        circular: new Map()
+      })
     })));
   }
 
   return Scene;
 }(Record({
-  unit: 'cm',
+  unit: "cm",
   layers: new Map(),
   grids: new Map(),
   selectedLayer: null,
   groups: new Map(),
-  width: 3000,
-  height: 2000,
+  width: 1500,
+  height: 1000,
   meta: new Map(), //additional info
   guides: new Map()
-}, 'Scene'));
+}, "Scene"));
 
 export var CatalogElement = function (_Record11) {
   _inherits(CatalogElement, _Record11);
@@ -310,11 +314,11 @@ export var CatalogElement = function (_Record11) {
 
   return CatalogElement;
 }(Record({
-  name: '',
-  prototype: '',
+  name: "",
+  prototype: "",
   info: new Map(),
   properties: new Map()
-}, 'CatalogElement'));
+}, "CatalogElement"));
 
 export var Catalog = function (_Record12) {
   _inherits(Catalog, _Record12);
@@ -332,35 +336,35 @@ export var Catalog = function (_Record12) {
   }
 
   _createClass(Catalog, [{
-    key: 'factoryElement',
+    key: "factoryElement",
     value: function factoryElement(type, options, initialProperties) {
       if (!this.elements.has(type)) {
         var catList = this.elements.map(function (element) {
           return element.name;
         }).toArray();
-        throw new Error('Element ' + type + ' does not exist in catalog ' + catList);
+        throw new Error("Element " + type + " does not exist in catalog " + catList);
       }
 
       var element = this.elements.get(type);
       var properties = element.properties.map(function (value, key) {
-        return initialProperties && initialProperties.has(key) ? initialProperties.get(key) : value.get('defaultValue');
+        return initialProperties && initialProperties.has(key) ? initialProperties.get(key) : value.get("defaultValue");
       });
 
       switch (element.prototype) {
-        case 'lines':
+        case "lines":
           return new Line(options).merge({ properties: properties });
 
-        case 'holes':
+        case "holes":
           return new Hole(options).merge({ properties: properties });
 
-        case 'areas':
+        case "areas":
           return new Area(options).merge({ properties: properties });
 
-        case 'items':
+        case "items":
           return new Item(options).merge({ properties: properties });
 
         default:
-          throw new Error('prototype not valid');
+          throw new Error("prototype not valid");
       }
     }
   }]);
@@ -368,10 +372,10 @@ export var Catalog = function (_Record12) {
   return Catalog;
 }(Record({
   ready: false,
-  page: 'root',
+  page: "root",
   path: new List(),
   elements: new Map()
-}, 'Catalog'));
+}, "Catalog"));
 
 export var HistoryStructure = function (_Record13) {
   _inherits(HistoryStructure, _Record13);
@@ -393,7 +397,7 @@ export var HistoryStructure = function (_Record13) {
   list: new List(),
   first: null,
   last: null
-}, 'HistoryStructure'));
+}, "HistoryStructure"));
 
 export var State = function (_Record14) {
   _inherits(State, _Record14);
@@ -436,4 +440,4 @@ export var State = function (_Record14) {
   selectedElementsHistory: new List(),
   misc: new Map(), //additional info
   alterate: false
-}, 'State'));
+}, "State"));
