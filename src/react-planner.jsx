@@ -54,12 +54,31 @@ class ReactPlanner extends Component {
   }
 
   render() {
-    let { width, height, state, stateExtractor, ...props } = this.props;
+    let {
+      width,
+      height,
+      state,
+      stateExtractor,
+      disableSideBar = false,
+      disableFooterBar = false,
+      ...props
+    } = this.props;
 
-    let contentW = width - toolbarW - sidebarW;
-    let toolbarH = height - footerBarH;
-    let contentH = height - footerBarH;
-    let sidebarH = height - footerBarH;
+    let contentW = width - toolbarW;
+
+    if (!disableSideBar) {
+      contentW -= sidebarW;
+    }
+
+    let toolbarH = height;
+    let contentH = height;
+    let sidebarH = height;
+
+    if (!disableFooterBar) {
+      toolbarH -= footerBarH;
+      contentH -= footerBarH;
+      sidebarH -= footerBarH;
+    }
 
     let extractedState = stateExtractor(state);
 
@@ -78,18 +97,22 @@ class ReactPlanner extends Component {
           {...props}
           onWheel={(event) => event.preventDefault()}
         />
-        <Sidebar
-          width={sidebarW}
-          height={sidebarH}
-          state={extractedState}
-          {...props}
-        />
-        <FooterBar
-          width={width}
-          height={footerBarH}
-          state={extractedState}
-          {...props}
-        />
+        {!disableSideBar && (
+          <Sidebar
+            width={sidebarW}
+            height={sidebarH}
+            state={extractedState}
+            {...props}
+          />
+        )}
+        {!disableFooterBar && (
+          <FooterBar
+            width={width}
+            height={footerBarH}
+            state={extractedState}
+            {...props}
+          />
+        )}
       </div>
     );
   }

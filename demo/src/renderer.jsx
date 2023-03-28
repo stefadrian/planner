@@ -99,6 +99,8 @@ ReactDOM.render(
             plugins={plugins}
             toolbarButtons={toolbarButtons}
             stateExtractor={(state) => state.get("react-planner")}
+            disableFooterBar={true}
+            disableSideBar={true}
           />
         </div>
       )}
