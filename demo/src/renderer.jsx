@@ -90,12 +90,15 @@ ReactDOM.render(
             marginRight: "75px",
             borderRadius: "15px",
             overflow: "hidden",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <ReactPlanner
             catalog={MyCatalog}
-            width={width - 160}
-            height={height - 155}
+            width={800}
+            height={600}
             plugins={plugins}
             toolbarButtons={toolbarButtons}
             stateExtractor={(state) => state.get("react-planner")}
