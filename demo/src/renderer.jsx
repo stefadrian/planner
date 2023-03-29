@@ -104,6 +104,7 @@ ReactDOM.render(
             stateExtractor={(state) => state.get("react-planner")}
             disableFooterBar={true}
             disableSideBar={true}
+            onSaveAction={undefined}
           />
         </div>
       )}

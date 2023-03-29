@@ -63,7 +63,6 @@ class ReactPlanner extends Component {
       disableFooterBar = false,
       ...props
     } = this.props;
-
     let contentW = width - toolbarW;
 
     if (!disableSideBar) {

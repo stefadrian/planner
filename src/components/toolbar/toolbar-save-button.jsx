@@ -6,10 +6,10 @@ import { browserDownload } from "../../utils/browser";
 import { Project } from "../../class/export";
 
 export default function ToolbarSaveButton(
-  { state },
-  { translator },
-  onSaveAction
+  { state, onSaveAction },
+  { translator }
 ) {
+  //aici ceva nu e bine
   let saveProjectToFile = (e) => {
     e.preventDefault();
     state = Project.unselectAll(state).updatedState;

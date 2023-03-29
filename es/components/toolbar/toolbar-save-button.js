@@ -5,10 +5,12 @@ import ToolbarButton from "./toolbar-button";
 import { browserDownload } from "../../utils/browser";
 import { Project } from "../../class/export";
 
-export default function ToolbarSaveButton(_ref, _ref2, onSaveAction) {
-  var state = _ref.state;
+export default function ToolbarSaveButton(_ref, _ref2) {
+  var state = _ref.state,
+      onSaveAction = _ref.onSaveAction;
   var translator = _ref2.translator;
 
+  //aici ceva nu e bine
   var saveProjectToFile = function saveProjectToFile(e) {
     e.preventDefault();
     state = Project.unselectAll(state).updatedState;

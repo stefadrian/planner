@@ -122,7 +122,10 @@ var Toolbar = function (_Component) {
       }, {
         index: 1,
         condition: allowProjectFileSupport,
-        dom: React.createElement(ToolbarSaveButton, { state: state, onSaveAction: props.onSaveAction })
+        dom: React.createElement(ToolbarSaveButton, {
+          state: state,
+          onSaveAction: this.props.onSaveAction
+        })
       },
       // {
       //   index: 2,

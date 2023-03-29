@@ -65,7 +65,6 @@ export default class Toolbar extends Component {
       this.props.state.alterate !== nextProps.state.alterate
     );
   }
-
   render() {
     let {
       props: { state, width, height, toolbarButtons, allowProjectFileSupport },
@@ -98,7 +97,10 @@ export default class Toolbar extends Component {
         index: 1,
         condition: allowProjectFileSupport,
         dom: (
-          <ToolbarSaveButton state={state} onSaveAction={props.onSaveAction} />
+          <ToolbarSaveButton
+            state={state}
+            onSaveAction={this.props.onSaveAction}
+          />
         ),
       },
       // {
