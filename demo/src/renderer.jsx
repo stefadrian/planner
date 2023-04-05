@@ -84,7 +84,7 @@ ReactDOM.render(
       {({ width, height }) => (
         <div
           style={{
-            border: "5px solid red",
+            // border: "5px solid red",
             marginTop: "75px",
             marginLeft: "75px",
             marginRight: "75px",
@@ -103,7 +103,7 @@ ReactDOM.render(
             toolbarButtons={toolbarButtons}
             stateExtractor={(state) => state.get("react-planner")}
             disableFooterBar={true}
-            disableSideBar={true}
+            disableSideBar={false}
             onSaveAction={undefined}
           />
         </div>
