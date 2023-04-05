@@ -507,7 +507,7 @@ OBJLoader.prototype = {
         // or
         // g group_name
 
-        let name = result[0]?.substr(1)?.trim();
+        let name = result[0].substr(1).trim();
         state.startObject(name);
       } else if (this.regexp.material_use_pattern.test(line)) {
         // material

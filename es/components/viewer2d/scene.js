@@ -8,9 +8,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Layer, Grids } from './export';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Layer, Grids } from "./export";
 
 var Scene = function (_Component) {
   _inherits(Scene, _Component);
@@ -22,12 +22,12 @@ var Scene = function (_Component) {
   }
 
   _createClass(Scene, [{
-    key: 'shouldComponentUpdate',
+    key: "shouldComponentUpdate",
     value: function shouldComponentUpdate(nextProps, nextState) {
       return this.props.scene.hashCode() !== nextProps.scene.hashCode();
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _props = this.props,
           scene = _props.scene,
@@ -38,12 +38,12 @@ var Scene = function (_Component) {
       var selectedLayer = layers.get(scene.selectedLayer);
 
       return React.createElement(
-        'g',
+        "g",
         null,
         React.createElement(Grids, { scene: scene }),
         React.createElement(
-          'g',
-          { style: { pointerEvents: 'none' } },
+          "g",
+          { style: { pointerEvents: "none" } },
           layers.entrySeq().filter(function (_ref) {
             var _ref2 = _slicedToArray(_ref, 2),
                 layerID = _ref2[0],
@@ -55,10 +55,20 @@ var Scene = function (_Component) {
                 layerID = _ref4[0],
                 layer = _ref4[1];
 
-            return React.createElement(Layer, { key: layerID, layer: layer, scene: scene, catalog: catalog });
+            return React.createElement(Layer, {
+              key: layerID,
+              layer: layer,
+              scene: scene,
+              catalog: catalog
+            });
           })
         ),
-        React.createElement(Layer, { key: selectedLayer.id, layer: selectedLayer, scene: scene, catalog: catalog })
+        React.createElement(Layer, {
+          key: selectedLayer.id,
+          layer: selectedLayer,
+          scene: scene,
+          catalog: catalog
+        })
       );
     }
   }]);

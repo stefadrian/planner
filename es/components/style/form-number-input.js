@@ -8,36 +8,36 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import * as SharedStyle from '../../shared-style';
-import { MdUpdate } from 'react-icons/md';
-import { KEYBOARD_BUTTON_CODE } from '../../constants';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import * as SharedStyle from "../../shared-style";
+import { MdUpdate } from "react-icons/md";
+import { KEYBOARD_BUTTON_CODE } from "../../constants";
 
 var STYLE_INPUT = {
-  display: 'block',
-  width: '100%',
-  padding: '0 2px',
-  fontSize: '13px',
-  lineHeight: '1.25',
+  display: "block",
+  width: "100%",
+  padding: "0 2px",
+  fontSize: "13px",
+  lineHeight: "1.25",
   color: SharedStyle.PRIMARY_COLOR.input,
   backgroundColor: SharedStyle.COLORS.white,
-  backgroundImage: 'none',
-  border: '1px solid rgba(0,0,0,.15)',
-  outline: 'none',
-  height: '30px'
+  backgroundImage: "none",
+  border: "1px solid rgba(0,0,0,.15)",
+  outline: "none",
+  height: "30px"
 };
 
 var confirmStyle = {
-  position: 'absolute',
-  cursor: 'pointer',
-  width: '2em',
-  height: '2em',
-  right: '0.35em',
-  top: '0.35em',
+  position: "absolute",
+  cursor: "pointer",
+  width: "2em",
+  height: "2em",
+  right: "0.35em",
+  top: "0.35em",
   backgroundColor: SharedStyle.SECONDARY_COLOR.main,
-  color: '#FFF',
-  transition: 'all 0.1s linear'
+  color: "#FFF",
+  transition: "all 0.1s linear"
 };
 
 var FormNumberInput = function (_Component) {
@@ -57,14 +57,14 @@ var FormNumberInput = function (_Component) {
   }
 
   _createClass(FormNumberInput, [{
-    key: 'componentWillReceiveProps',
+    key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
       if (this.props.value !== nextProps.value) {
         this.setState({ showedValue: nextProps.value });
       }
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this2 = this;
 
@@ -77,13 +77,14 @@ var FormNumberInput = function (_Component) {
           onValid = _props.onValid,
           onInvalid = _props.onInvalid,
           style = _props.style,
-          placeholder = _props.placeholder;
+          placeholder = _props.placeholder,
+          autosave = _props.autosave;
 
       var numericInputStyle = _extends({}, STYLE_INPUT, style);
 
-      if (this.state.focus) numericInputStyle.border = '1px solid ' + SharedStyle.SECONDARY_COLOR.main;
+      if (this.state.focus) numericInputStyle.border = "1px solid " + SharedStyle.SECONDARY_COLOR.main;
 
-      var regexp = new RegExp('^-?([0-9]+)?\\.?([0-9]{0,' + precision + '})?$');
+      var regexp = new RegExp("^-?([0-9]+)?\\.?([0-9]{0," + precision + "})?$");
 
       if (!isNaN(min) && isFinite(min) && this.state.showedValue < min) this.setState({ showedValue: min }); // value = min;
       if (!isNaN(max) && isFinite(max) && this.state.showedValue > max) this.setState({ showedValue: max }); // value = max;
@@ -96,7 +97,7 @@ var FormNumberInput = function (_Component) {
         e.stopPropagation();
 
         if (_this2.state.valid) {
-          var savedValue = _this2.state.showedValue !== '' && _this2.state.showedValue !== '-' ? parseFloat(_this2.state.showedValue) : 0;
+          var savedValue = _this2.state.showedValue !== "" && _this2.state.showedValue !== "-" ? parseFloat(_this2.state.showedValue) : 0;
 
           _this2.setState({ showedValue: savedValue });
           onChange({ target: { value: savedValue } });
@@ -104,10 +105,10 @@ var FormNumberInput = function (_Component) {
       };
 
       return React.createElement(
-        'div',
-        { style: { position: 'relative' } },
-        React.createElement('input', {
-          type: 'text',
+        "div",
+        { style: { position: "relative" } },
+        React.createElement("input", {
+          type: "text",
           value: currValue,
           style: numericInputStyle,
           onChange: function onChange(evt) {
@@ -128,24 +129,34 @@ var FormNumberInput = function (_Component) {
           onBlur: function onBlur(e) {
             return _this2.setState({ focus: false });
           },
-          onKeyDown: function onKeyDown(e) {
+          onKeyUp: function onKeyUp(e) {
             var keyCode = e.keyCode || e.which;
-            if ((keyCode == KEYBOARD_BUTTON_CODE.ENTER || keyCode == KEYBOARD_BUTTON_CODE.TAB) && different) {
+            if (autosave || (keyCode == KEYBOARD_BUTTON_CODE.ENTER || keyCode == KEYBOARD_BUTTON_CODE.TAB) && different) {
               saveFn(e);
             }
           },
           placeholder: placeholder
         }),
         React.createElement(
-          'div',
+          "div",
           {
             onClick: function onClick(e) {
               if (different) saveFn(e);
             },
-            title: this.context.translator.t('Confirm'),
-            style: _extends({}, confirmStyle, { visibility: different ? 'visible' : 'hidden', opacity: different ? '1' : '0' })
+            title: this.context.translator.t("Confirm"),
+            style: _extends({}, confirmStyle, {
+              visibility: autosave || different ? "visible" : "hidden",
+              opacity: different ? "1" : "0"
+            })
           },
-          React.createElement(MdUpdate, { style: { width: '100%', height: '100%', padding: '0.2em', color: '#FFF' } })
+          React.createElement(MdUpdate, {
+            style: {
+              width: "100%",
+              height: "100%",
+              padding: "0.2em",
+              color: "#FFF"
+            }
+          })
         )
       );
     }

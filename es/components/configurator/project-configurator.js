@@ -6,9 +6,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { ContentTitle, ContentContainer, FormLabel, FormBlock, FormNumberInput, FormSubmitButton, CancelButton } from '../style/export';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { ContentTitle, ContentContainer, FormLabel, FormBlock, FormNumberInput, FormSubmitButton, CancelButton } from "../style/export";
 
 var ProjectConfigurator = function (_Component) {
   _inherits(ProjectConfigurator, _Component);
@@ -28,7 +28,7 @@ var ProjectConfigurator = function (_Component) {
   }
 
   _createClass(ProjectConfigurator, [{
-    key: 'onSubmit',
+    key: "onSubmit",
     value: function onSubmit(event) {
       event.preventDefault();
 
@@ -40,13 +40,16 @@ var ProjectConfigurator = function (_Component) {
       dataWidth = parseInt(dataWidth);
       dataHeight = parseInt(dataHeight);
       if (dataWidth <= 100 || dataHeight <= 100) {
-        alert('Scene size too small');
+        alert("Scene size too small");
       } else {
-        projectActions.setProjectProperties({ width: dataWidth, height: dataHeight });
+        projectActions.setProjectProperties({
+          width: dataWidth,
+          height: dataHeight
+        });
       }
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this2 = this;
 
@@ -67,10 +70,10 @@ var ProjectConfigurator = function (_Component) {
         React.createElement(
           ContentTitle,
           null,
-          translator.t('Project config')
+          translator.t("Project config")
         ),
         React.createElement(
-          'form',
+          "form",
           { onSubmit: function onSubmit(e) {
               return _this2.onSubmit(e);
             } },
@@ -79,13 +82,14 @@ var ProjectConfigurator = function (_Component) {
             null,
             React.createElement(
               FormLabel,
-              { htmlFor: 'width' },
-              translator.t('width')
+              { htmlFor: "width" },
+              translator.t("width")
             ),
             React.createElement(FormNumberInput, {
-              id: 'width',
-              placeholder: 'width',
+              id: "width",
+              placeholder: "width",
               value: dataWidth,
+              autosave: true,
               onChange: function onChange(e) {
                 return _this2.setState({ dataWidth: e.target.value });
               }
@@ -96,46 +100,49 @@ var ProjectConfigurator = function (_Component) {
             null,
             React.createElement(
               FormLabel,
-              { htmlFor: 'height' },
-              translator.t('height')
+              { htmlFor: "height" },
+              translator.t("height")
             ),
             React.createElement(FormNumberInput, {
-              id: 'height',
-              placeholder: 'height',
+              id: "height",
+              placeholder: "height",
               value: dataHeight,
+              autosave: true,
               onChange: function onChange(e) {
                 return _this2.setState({ dataHeight: e.target.value });
               }
             })
           ),
           React.createElement(
-            'table',
-            { style: { float: 'right' } },
+            "table",
+            { style: { float: "right" } },
             React.createElement(
-              'tbody',
+              "tbody",
               null,
               React.createElement(
-                'tr',
+                "tr",
                 null,
                 React.createElement(
-                  'td',
+                  "td",
                   null,
                   React.createElement(
                     CancelButton,
-                    { size: 'large',
+                    {
+                      size: "large",
                       onClick: function onClick(e) {
                         return projectActions.rollback();
-                      } },
-                    translator.t('Cancel')
+                      }
+                    },
+                    translator.t("Cancel")
                   )
                 ),
                 React.createElement(
-                  'td',
+                  "td",
                   null,
                   React.createElement(
                     FormSubmitButton,
-                    { size: 'large' },
-                    translator.t('Save')
+                    { size: "large" },
+                    translator.t("Save")
                   )
                 )
               )
