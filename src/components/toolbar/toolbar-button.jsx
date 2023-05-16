@@ -5,13 +5,13 @@ import * as SharedStyle from '../../shared-style';
 //http://www.cssportal.com/css-tooltip-generator/
 
 const STYLE = {
-  width: '30px',
-  height: '30px',
+  width: '60px',
+  height: '60px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   marginBottom: '5px',
-  fontSize: '25px',
+  fontSize: '45px',
   position: 'relative',
   cursor: 'pointer'
 };
@@ -68,11 +68,11 @@ export default class ToolbarButton extends Component {
 
         {
           state.active ?
-          <div style={STYLE_TOOLTIP}>
-            <span style={STYLE_TOOLTIP_PIN} />
-            {props.tooltip}
-          </div>
-          : null
+            <div style={STYLE_TOOLTIP}>
+              <span style={STYLE_TOOLTIP_PIN} />
+              {props.tooltip}
+            </div>
+            : null
         }
 
       </div>

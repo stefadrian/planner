@@ -90,8 +90,8 @@ class ReactPlanner extends Component {
 
     if (toolbarProps.orientation === 'horizontal') {
       toolbarW = contentW;
-      toolbarH = 50;
-      contentH -= 50;
+      toolbarH = 70;
+      contentH -= toolbarH;
     }
 
     let extractedState = stateExtractor(state);

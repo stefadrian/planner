@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import ContainerDimensions from "react-container-dimensions";
 import Immutable, { Map } from "immutable";
@@ -106,7 +106,33 @@ ReactDOM.render(
             disableSideBar={true}
             onSaveAction={undefined}
             toolbarProps={{
-              orientation: "horizontal"
+              orientation: "horizontal",
+              buttons: [
+                {
+                  tooltip: 'Add Wall',
+                  condition: true,
+                  onClickEvent: (projectActions, itemsActions, linesActions, holesActions) => {
+                    linesActions.selectToolDrawingLine('wall');
+                  },
+                  iconData: <Fragment><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 640 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M144 256h352c8.8 0 16-7.2 16-16V16c0-8.8-7.2-16-16-16H384v128l-64-32-64 32V0H144c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16zm480 128c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h48v64H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h608c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16h-48v-64h48zm-336 64H128v-64h160v64zm224 0H352v-64h160v64z"></path></svg></Fragment>
+                },
+                {
+                  tooltip: 'Add Window',
+                  condition: true,
+                  onClickEvent: (projectActions, itemsActions, linesActions, holesActions) => {
+                    holesActions.selectToolDrawingHole('window');
+                  },
+                  iconData: <Fragment><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 93.7l183.6-25.3v177.4H0V93.7zm0 324.6l183.6 25.3V268.4H0v149.9zm203.8 28L448 480V268.4H203.8v177.9zm0-380.6v180.1H448V32L203.8 65.7z"></path></svg></Fragment>
+                },
+                {
+                  tooltip: 'Add Door',
+                  condition: true,
+                  onClickEvent: (projectActions, itemsActions, linesActions, holesActions) => {
+                    holesActions.selectToolDrawingHole('door');
+                  },
+                  iconData: <Fragment><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 640 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M624 448h-80V113.45C544 86.19 522.47 64 496 64H384v64h96v384h144c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM312.24 1.01l-192 49.74C105.99 54.44 96 67.7 96 82.92V448H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h336V33.18c0-21.58-19.56-37.41-39.76-32.17zM264 288c-13.25 0-24-14.33-24-32s10.75-32 24-32 24 14.33 24 32-10.75 32-24 32z"></path></svg></Fragment>
+                }
+              ]
             }}
           />
         </div>

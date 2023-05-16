@@ -32,7 +32,7 @@ const ASIDE_STYLE = {
 };
 
 const TOP_STYLE = {
-  backgroundColor: SharedStyle.PRIMARY_COLOR.main,
+  //backgroundColor: SharedStyle.PRIMARY_COLOR.main,
   padding: "10px",
   width: "100%",
   display: 'flex'
@@ -82,16 +82,18 @@ export default class Toolbar extends Component {
     let alterate = state.get("alterate");
     let alterateColor = alterate ? SharedStyle.MATERIAL_COLORS[500].orange : "";
 
-    console.log(this.context, '-----------this.context')
     let sorter = [
-      {
+      /*{
         index: 0,
         condition: true,
         dom: (
           <ToolbarButton
             active={false}
             tooltip={"Add Wall"}
-            onClick={(event) => linesActions.selectToolDrawingLine('wall')}
+            onClick={(event) => {
+              projectActions.pushLastSelectedCatalogElementToHistory({ name: 'wall' });
+              linesActions.selectToolDrawingLine('wall');
+            }}
           >
             <FaPallet />
           </ToolbarButton>
@@ -104,7 +106,10 @@ export default class Toolbar extends Component {
           <ToolbarButton
             active={false}
             tooltip={"Add Door"}
-            onClick={(event) => { holesActions.selectToolDrawingHole('door'); }}
+            onClick={(event) => {
+              holesActions.selectToolDrawingHole('door');
+              projectActions.pushLastSelectedCatalogElementToHistory({ name: 'door' });
+            }}
           >
             <FaDoorOpen />
           </ToolbarButton>
@@ -117,9 +122,25 @@ export default class Toolbar extends Component {
           <ToolbarButton
             active={false}
             tooltip={"Add Window"}
-            onClick={(event) => { holesActions.selectToolDrawingHole('window'); }}
+            onClick={(event) => {
+              holesActions.selectToolDrawingHole('window');
+              projectActions.pushLastSelectedCatalogElementToHistory({ name: 'window' });
+            }}
           >
             <FaWindows />
+          </ToolbarButton>
+        ),
+      },*/
+      {
+        index: 19,
+        condition: true,
+        dom: (
+          <ToolbarButton
+            active={[MODE_VIEWING_CATALOG].includes(mode)}
+            tooltip={translator.t("Open catalog")}
+            onClick={(event) => projectActions.openCatalog()}
+          >
+            <FaPlus />
           </ToolbarButton>
         ),
       },
@@ -234,29 +255,37 @@ export default class Toolbar extends Component {
       // },
     ];
 
-    // sorter = sorter.concat(
-    //   toolbarButtons.map((Component, key) => {
-    //     return Component.prototype //if is a react component
-    //       ? {
-    //           condition: true,
-    //           dom: React.createElement(Component, { mode, state, key }),
-    //         }
-    //       : {
-    //           //else is a sortable toolbar button
-    //           index: Component.index,
-    //           condition: Component.condition,
-    //           dom: React.createElement(Component.dom, { mode, state, key }),
-    //         };
-    //   })
-    // );
     let style = toolbarProps.orientation === 'horizontal' ? TOP_STYLE : ASIDE_STYLE;
+    let addSorter = []
+
+    let index = 0;
+    toolbarProps.buttons.map(element => {
+      addSorter.push(
+        {
+          index: index,
+          condition: element.condition,
+          dom: (
+            <ToolbarButton
+              active={false}
+              tooltip={element.tooltip}
+              onClick={() => element.onClickEvent(projectActions, itemsActions, linesActions, holesActions)}
+            >
+              {element.iconData}
+            </ToolbarButton>
+          ),
+        }
+      )
+      index++;
+    })
+
+    let finalSorter = addSorter.concat(sorter)
 
     return (
       <aside
         style={{ ...style, maxWidth: width, maxHeight: height }}
         className="toolbar"
       >
-        {sorter.sort(sortButtonsCb).map(mapButtonsCb)}
+        {finalSorter.sort(sortButtonsCb).map(mapButtonsCb)}
       </aside>
     );
   }
