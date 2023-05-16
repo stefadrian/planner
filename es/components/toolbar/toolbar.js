@@ -50,7 +50,7 @@ var ASIDE_STYLE = {
 };
 
 var TOP_STYLE = {
-  backgroundColor: SharedStyle.PRIMARY_COLOR.main,
+  //backgroundColor: SharedStyle.PRIMARY_COLOR.main,
   padding: "10px",
   width: "100%",
   display: 'flex'
@@ -116,48 +116,68 @@ var Toolbar = function (_Component) {
       var alterate = state.get("alterate");
       var alterateColor = alterate ? SharedStyle.MATERIAL_COLORS[500].orange : "";
 
-      console.log(this.context, '-----------this.context');
-      var sorter = [{
+      var sorter = [
+      /*{
         index: 0,
         condition: true,
-        dom: React.createElement(
-          ToolbarButton,
-          {
-            active: false,
-            tooltip: "Add Wall",
-            onClick: function onClick(event) {
-              return linesActions.selectToolDrawingLine('wall');
-            }
-          },
-          React.createElement(FaPallet, null)
-        )
-      }, {
+        dom: (
+          <ToolbarButton
+            active={false}
+            tooltip={"Add Wall"}
+            onClick={(event) => {
+              projectActions.pushLastSelectedCatalogElementToHistory({ name: 'wall' });
+              linesActions.selectToolDrawingLine('wall');
+            }}
+          >
+            <FaPallet />
+          </ToolbarButton>
+        ),
+      },
+      {
         index: 1,
         condition: true,
-        dom: React.createElement(
-          ToolbarButton,
-          {
-            active: false,
-            tooltip: "Add Door",
-            onClick: function onClick(event) {
+        dom: (
+          <ToolbarButton
+            active={false}
+            tooltip={"Add Door"}
+            onClick={(event) => {
               holesActions.selectToolDrawingHole('door');
-            }
-          },
-          React.createElement(FaDoorOpen, null)
-        )
-      }, {
+              projectActions.pushLastSelectedCatalogElementToHistory({ name: 'door' });
+            }}
+          >
+            <FaDoorOpen />
+          </ToolbarButton>
+        ),
+      },
+      {
         index: 2,
+        condition: true,
+        dom: (
+          <ToolbarButton
+            active={false}
+            tooltip={"Add Window"}
+            onClick={(event) => {
+              holesActions.selectToolDrawingHole('window');
+              projectActions.pushLastSelectedCatalogElementToHistory({ name: 'window' });
+            }}
+          >
+            <FaWindows />
+          </ToolbarButton>
+        ),
+      },*/
+      {
+        index: 19,
         condition: true,
         dom: React.createElement(
           ToolbarButton,
           {
-            active: false,
-            tooltip: "Add Window",
+            active: [MODE_VIEWING_CATALOG].includes(mode),
+            tooltip: translator.t("Open catalog"),
             onClick: function onClick(event) {
-              holesActions.selectToolDrawingHole('window');
+              return projectActions.openCatalog();
             }
           },
-          React.createElement(FaWindows, null)
+          React.createElement(FaPlus, null)
         )
       }, {
         index: 20,
@@ -175,22 +195,30 @@ var Toolbar = function (_Component) {
         )
       }];
 
-      // sorter = sorter.concat(
-      //   toolbarButtons.map((Component, key) => {
-      //     return Component.prototype //if is a react component
-      //       ? {
-      //           condition: true,
-      //           dom: React.createElement(Component, { mode, state, key }),
-      //         }
-      //       : {
-      //           //else is a sortable toolbar button
-      //           index: Component.index,
-      //           condition: Component.condition,
-      //           dom: React.createElement(Component.dom, { mode, state, key }),
-      //         };
-      //   })
-      // );
       var style = toolbarProps.orientation === 'horizontal' ? TOP_STYLE : ASIDE_STYLE;
+      var addSorter = [];
+
+      var index = 0;
+      toolbarProps.buttons.map(function (element) {
+        addSorter.push({
+          index: index,
+          condition: element.condition,
+          dom: React.createElement(
+            ToolbarButton,
+            {
+              active: false,
+              tooltip: element.tooltip,
+              onClick: function onClick() {
+                return element.onClickEvent(projectActions, itemsActions, linesActions, holesActions);
+              }
+            },
+            element.iconData
+          )
+        });
+        index++;
+      });
+
+      var finalSorter = addSorter.concat(sorter);
 
       return React.createElement(
         "aside",
@@ -198,7 +226,7 @@ var Toolbar = function (_Component) {
           style: _extends({}, style, { maxWidth: width, maxHeight: height }),
           className: "toolbar"
         },
-        sorter.sort(sortButtonsCb).map(mapButtonsCb)
+        finalSorter.sort(sortButtonsCb).map(mapButtonsCb)
       );
     }
   }]);

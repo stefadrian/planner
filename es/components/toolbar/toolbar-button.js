@@ -13,13 +13,13 @@ import * as SharedStyle from '../../shared-style';
 //http://www.cssportal.com/css-tooltip-generator/
 
 var STYLE = {
-  width: '30px',
-  height: '30px',
+  width: '60px',
+  height: '60px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   marginBottom: '5px',
-  fontSize: '25px',
+  fontSize: '45px',
   position: 'relative',
   cursor: 'pointer'
 };
