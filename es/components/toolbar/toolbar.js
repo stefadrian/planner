@@ -165,21 +165,20 @@ var Toolbar = function (_Component) {
           </ToolbarButton>
         ),
       },*/
+      // {
+      //   index: 19,
+      //   condition: true,
+      //   dom: (
+      //     <ToolbarButton
+      //       active={[MODE_VIEWING_CATALOG].includes(mode)}
+      //       tooltip={translator.t("Open catalog")}
+      //       onClick={(event) => projectActions.openCatalog()}
+      //     >
+      //       <FaPlus />
+      //     </ToolbarButton>
+      //   ),
+      // },
       {
-        index: 19,
-        condition: true,
-        dom: React.createElement(
-          ToolbarButton,
-          {
-            active: [MODE_VIEWING_CATALOG].includes(mode),
-            tooltip: translator.t("Open catalog"),
-            onClick: function onClick(event) {
-              return projectActions.openCatalog();
-            }
-          },
-          React.createElement(FaPlus, null)
-        )
-      }, {
         index: 20,
         condition: true,
         dom: React.createElement(
