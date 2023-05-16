@@ -131,19 +131,19 @@ export default class Toolbar extends Component {
           </ToolbarButton>
         ),
       },*/
-      {
-        index: 19,
-        condition: true,
-        dom: (
-          <ToolbarButton
-            active={[MODE_VIEWING_CATALOG].includes(mode)}
-            tooltip={translator.t("Open catalog")}
-            onClick={(event) => projectActions.openCatalog()}
-          >
-            <FaPlus />
-          </ToolbarButton>
-        ),
-      },
+      // {
+      //   index: 19,
+      //   condition: true,
+      //   dom: (
+      //     <ToolbarButton
+      //       active={[MODE_VIEWING_CATALOG].includes(mode)}
+      //       tooltip={translator.t("Open catalog")}
+      //       onClick={(event) => projectActions.openCatalog()}
+      //     >
+      //       <FaPlus />
+      //     </ToolbarButton>
+      //   ),
+      // },
       {
         index: 20,
         condition: true,
