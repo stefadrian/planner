@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { MdSettings, MdUndo, MdDirectionsRun } from "react-icons/md";
-import { FaFile, FaMousePointer, FaPlus } from "react-icons/fa";
+import { FaWindows, FaDoorOpen, FaPallet, FaPlus } from "react-icons/fa";
 import ToolbarButton from "./toolbar-button";
 import ToolbarSaveButton from "./toolbar-save-button";
 import ToolbarLoadButton from "./toolbar-load-button";
@@ -29,6 +29,13 @@ const Icon3D = ({ style }) => <p style={{ ...iconTextStyle, ...style }}>3D</p>;
 const ASIDE_STYLE = {
   backgroundColor: SharedStyle.PRIMARY_COLOR.main,
   padding: "10px",
+};
+
+const TOP_STYLE = {
+  backgroundColor: SharedStyle.PRIMARY_COLOR.main,
+  padding: "10px",
+  width: "100%",
+  display: 'flex'
 };
 
 const sortButtonsCb = (a, b) => {
@@ -67,32 +74,85 @@ export default class Toolbar extends Component {
   }
   render() {
     let {
-      props: { state, width, height, toolbarButtons, allowProjectFileSupport },
-      context: { projectActions, viewer3DActions, translator },
+      props: { state, width, height, toolbarButtons, allowProjectFileSupport, toolbarProps },
+      context: { projectActions, holesActions, linesActions, itemsActions, viewer3DActions, translator },
     } = this;
 
     let mode = state.get("mode");
     let alterate = state.get("alterate");
     let alterateColor = alterate ? SharedStyle.MATERIAL_COLORS[500].orange : "";
 
+    console.log(this.context, '-----------this.context')
     let sorter = [
       {
         index: 0,
-        condition: allowProjectFileSupport,
+        condition: true,
         dom: (
           <ToolbarButton
             active={false}
-            tooltip={translator.t("New project")}
-            onClick={(event) =>
-              confirm(translator.t("Would you want to start a new Project?"))
-                ? projectActions.newProject()
-                : null
-            }
+            tooltip={"Add Wall"}
+            onClick={(event) => linesActions.selectToolDrawingLine('wall')}
           >
-            <FaFile />
+            <FaPallet />
           </ToolbarButton>
         ),
       },
+      {
+        index: 1,
+        condition: true,
+        dom: (
+          <ToolbarButton
+            active={false}
+            tooltip={"Add Door"}
+            onClick={(event) => { holesActions.selectToolDrawingHole('door'); }}
+          >
+            <FaDoorOpen />
+          </ToolbarButton>
+        ),
+      },
+      {
+        index: 2,
+        condition: true,
+        dom: (
+          <ToolbarButton
+            active={false}
+            tooltip={"Add Window"}
+            onClick={(event) => { holesActions.selectToolDrawingHole('window'); }}
+          >
+            <FaWindows />
+          </ToolbarButton>
+        ),
+      },
+      {
+        index: 20,
+        condition: true,
+        dom: (
+          <ToolbarButton
+            active={false}
+            tooltip={translator.t("Undo (CTRL-Z)")}
+            onClick={(event) => projectActions.undo()}
+          >
+            <MdUndo />
+          </ToolbarButton>
+        ),
+      },
+      // {
+      //   index: 0,
+      //   condition: allowProjectFileSupport,
+      //   dom: (
+      //     <ToolbarButton
+      //       active={false}
+      //       tooltip={translator.t("New project")}
+      //       onClick={(event) =>
+      //         confirm(translator.t("Would you want to start a new Project?"))
+      //           ? projectActions.newProject()
+      //           : null
+      //       }
+      //     >
+      //       <FaFile />
+      //     </ToolbarButton>
+      //   ),
+      // },
       // {
       //   index: 1,
       //   condition: allowProjectFileSupport,
@@ -108,19 +168,19 @@ export default class Toolbar extends Component {
       //   condition: allowProjectFileSupport,
       //   dom: <ToolbarLoadButton state={state} />,
       // },
-      {
-        index: 3,
-        condition: true,
-        dom: (
-          <ToolbarButton
-            active={[MODE_VIEWING_CATALOG].includes(mode)}
-            tooltip={translator.t("Open catalog")}
-            onClick={(event) => projectActions.openCatalog()}
-          >
-            <FaPlus />
-          </ToolbarButton>
-        ),
-      },
+      // {
+      //   index: 3,
+      //   condition: true,
+      //   dom: (
+      //     <ToolbarButton
+      //       active={[MODE_VIEWING_CATALOG].includes(mode)}
+      //       tooltip={translator.t("Open catalog")}
+      //       onClick={(event) => projectActions.openCatalog()}
+      //     >
+      //       <FaPlus />
+      //     </ToolbarButton>
+      //   ),
+      // },
       // {
       //   index: 4,
       //   condition: true,
@@ -134,23 +194,23 @@ export default class Toolbar extends Component {
       //     </ToolbarButton>
       //   ),
       // },
-      {
-        index: 5,
-        condition: true,
-        dom: (
-          <ToolbarButton
-            active={[MODE_IDLE].includes(mode)}
-            tooltip={translator.t("2D View")}
-            onClick={(event) => projectActions.setMode(MODE_IDLE)}
-          >
-            {[MODE_3D_FIRST_PERSON, MODE_3D_VIEW].includes(mode) ? (
-              <Icon2D style={{ color: alterateColor }} />
-            ) : (
-              <FaMousePointer style={{ color: alterateColor }} />
-            )}
-          </ToolbarButton>
-        ),
-      },
+      // {
+      //   index: 5,
+      //   condition: true,
+      //   dom: (
+      //     <ToolbarButton
+      //       active={[MODE_IDLE].includes(mode)}
+      //       tooltip={translator.t("2D View")}
+      //       onClick={(event) => projectActions.setMode(MODE_IDLE)}
+      //     >
+      //       {[MODE_3D_FIRST_PERSON, MODE_3D_VIEW].includes(mode) ? (
+      //         <Icon2D style={{ color: alterateColor }} />
+      //       ) : (
+      //         <FaMousePointer style={{ color: alterateColor }} />
+      //       )}
+      //     </ToolbarButton>
+      //   ),
+      // },
       // {
       //   index: 6, condition: true, dom: <ToolbarButton
       //     active={[MODE_3D_FIRST_PERSON].includes(mode)}
@@ -159,32 +219,19 @@ export default class Toolbar extends Component {
       //     <MdDirectionsRun />
       //   </ToolbarButton>
       // },
-      {
-        index: 7,
-        condition: true,
-        dom: (
-          <ToolbarButton
-            active={false}
-            tooltip={translator.t("Undo (CTRL-Z)")}
-            onClick={(event) => projectActions.undo()}
-          >
-            <MdUndo />
-          </ToolbarButton>
-        ),
-      },
-      {
-        index: 8,
-        condition: true,
-        dom: (
-          <ToolbarButton
-            active={[MODE_CONFIGURING_PROJECT].includes(mode)}
-            tooltip={translator.t("Configure project")}
-            onClick={(event) => projectActions.openProjectConfigurator()}
-          >
-            <MdSettings />
-          </ToolbarButton>
-        ),
-      },
+      // {
+      //   index: 8,
+      //   condition: true,
+      //   dom: (
+      //     <ToolbarButton
+      //       active={[MODE_CONFIGURING_PROJECT].includes(mode)}
+      //       tooltip={translator.t("Configure project")}
+      //       onClick={(event) => projectActions.openProjectConfigurator()}
+      //     >
+      //       <MdSettings />
+      //     </ToolbarButton>
+      //   ),
+      // },
     ];
 
     // sorter = sorter.concat(
@@ -202,10 +249,11 @@ export default class Toolbar extends Component {
     //         };
     //   })
     // );
+    let style = toolbarProps.orientation === 'horizontal' ? TOP_STYLE : ASIDE_STYLE;
 
     return (
       <aside
-        style={{ ...ASIDE_STYLE, maxWidth: width, maxHeight: height }}
+        style={{ ...style, maxWidth: width, maxHeight: height }}
         className="toolbar"
       >
         {sorter.sort(sortButtonsCb).map(mapButtonsCb)}

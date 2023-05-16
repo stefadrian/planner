@@ -19,13 +19,16 @@ const { Toolbar } = ToolbarComponents;
 const { Sidebar } = SidebarComponents;
 const { FooterBar } = FooterBarComponents;
 
-const toolbarW = 50;
 const sidebarW = 300;
 const footerBarH = 20;
 
 const wrapperStyle = {
   display: "flex",
   flexFlow: "row nowrap",
+};
+
+const wrapperStyleToolbarHorizontal = {
+  flexFlow: "row wrap",
 };
 
 class ReactPlanner extends Component {
@@ -61,8 +64,14 @@ class ReactPlanner extends Component {
       stateExtractor,
       disableSideBar = false,
       disableFooterBar = false,
+      toolbarProps = {
+        orientation: 'vertical'
+      },
       ...props
     } = this.props;
+
+    let toolbarW = 50;
+
     let contentW = width - toolbarW;
 
     if (!disableSideBar) {
@@ -74,19 +83,31 @@ class ReactPlanner extends Component {
     let sidebarH = height;
 
     if (!disableFooterBar) {
-      toolbarH -= footerBarH;
+      if (toolbarProps.orientation === 'vertical') { toolbarH -= footerBarH; }
       contentH -= footerBarH;
       sidebarH -= footerBarH;
     }
 
+    if (toolbarProps.orientation === 'horizontal') {
+      toolbarW = contentW;
+      toolbarH = 50;
+      contentH -= 50;
+    }
+
     let extractedState = stateExtractor(state);
 
+    let wrapperCss = wrapperStyle
+    if (toolbarProps.orientation === 'horizontal') {
+      wrapperCss = { ...wrapperStyle, ...wrapperStyleToolbarHorizontal }
+    }
+
     return (
-      <div style={{ ...wrapperStyle, height }}>
+      <div style={{ ...wrapperCss, height }}>
         <Toolbar
           width={toolbarW}
           height={toolbarH}
           state={extractedState}
+          toolbarProps={toolbarProps}
           {...props}
         />
         <Content

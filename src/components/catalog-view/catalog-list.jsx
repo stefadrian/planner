@@ -180,7 +180,7 @@ export default class CatalogList extends Component {
           key={pathSize}
           page={
             this.context.catalog.categories[
-              this.props.state.catalog.path.get(pathSize - 1)
+            this.props.state.catalog.path.get(pathSize - 1)
             ]
           }
         />
@@ -197,11 +197,6 @@ export default class CatalogList extends Component {
         {el.name}
       </div>
     ));
-    console.log("Stef", {
-      maxWidth: `${this.props.width}px`,
-      ...containerStyle,
-      ...this.props.style,
-    });
     return (
       <ContentContainer
         width={this.props.width}
@@ -235,21 +230,21 @@ export default class CatalogList extends Component {
         <div style={itemsStyle}>
           {this.state.matchString === ""
             ? [
-                turnBackButton,
-                categoriesToDisplay.map((cat) => (
-                  <CatalogPageItem
-                    key={cat.name}
-                    page={cat}
-                    oldPage={currentCategory}
-                  />
-                )),
-                elementsToDisplay.map((elem) => (
-                  <CatalogItem key={elem.name} element={elem} />
-                )),
-              ]
-            : this.state.matchedElements.map((elem) => (
+              turnBackButton,
+              categoriesToDisplay.map((cat) => (
+                <CatalogPageItem
+                  key={cat.name}
+                  page={cat}
+                  oldPage={currentCategory}
+                />
+              )),
+              elementsToDisplay.map((elem) => (
                 <CatalogItem key={elem.name} element={elem} />
-              ))}
+              )),
+            ]
+            : this.state.matchedElements.map((elem) => (
+              <CatalogItem key={elem.name} element={elem} />
+            ))}
         </div>
       </ContentContainer>
     );

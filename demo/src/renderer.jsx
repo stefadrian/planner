@@ -51,21 +51,21 @@ let store = createStore(
   null,
   !isProduction && window.devToolsExtension
     ? window.devToolsExtension({
-        features: {
-          pause: true, // start/pause recording of dispatched actions
-          lock: true, // lock/unlock dispatching actions and side effects
-          persist: true, // persist states on page reloading
-          export: true, // export history of actions in a file
-          import: "custom", // import history of actions from a file
-          jump: true, // jump back and forth (time travelling)
-          skip: true, // skip (cancel) actions
-          reorder: true, // drag and drop actions in the history list
-          dispatch: true, // dispatch custom actions or action creators
-          test: true, // generate tests for the selected actions
-        },
-        actionsBlacklist: blackList,
-        maxAge: 999999,
-      })
+      features: {
+        pause: true, // start/pause recording of dispatched actions
+        lock: true, // lock/unlock dispatching actions and side effects
+        persist: true, // persist states on page reloading
+        export: true, // export history of actions in a file
+        import: "custom", // import history of actions from a file
+        jump: true, // jump back and forth (time travelling)
+        skip: true, // skip (cancel) actions
+        reorder: true, // drag and drop actions in the history list
+        dispatch: true, // dispatch custom actions or action creators
+        test: true, // generate tests for the selected actions
+      },
+      actionsBlacklist: blackList,
+      maxAge: 999999,
+    })
     : (f) => f
 );
 
@@ -103,8 +103,11 @@ ReactDOM.render(
             toolbarButtons={toolbarButtons}
             stateExtractor={(state) => state.get("react-planner")}
             disableFooterBar={true}
-            disableSideBar={false}
+            disableSideBar={true}
             onSaveAction={undefined}
+            toolbarProps={{
+              orientation: "horizontal"
+            }}
           />
         </div>
       )}
