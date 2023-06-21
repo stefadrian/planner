@@ -85,9 +85,9 @@ ReactDOM.render(
         <div
           style={{
             // border: "5px solid red",
-            marginTop: "75px",
-            marginLeft: "75px",
-            marginRight: "75px",
+            marginTop: "15px",
+            marginLeft: "15px",
+            marginRight: "15px",
             borderRadius: "15px",
             overflow: "hidden",
             display: "flex",
@@ -97,13 +97,13 @@ ReactDOM.render(
         >
           <ReactPlanner
             catalog={MyCatalog}
-            width={800}
-            height={600}
+            width={1000}
+            height={800}
             plugins={plugins}
             toolbarButtons={toolbarButtons}
             stateExtractor={(state) => state.get("react-planner")}
             disableFooterBar={true}
-            disableSideBar={true}
+            disableSideBar={false}
             onSaveAction={undefined}
             toolbarProps={{
               orientation: "horizontal",
@@ -131,6 +131,28 @@ ReactDOM.render(
                     holesActions.selectToolDrawingHole('door');
                   },
                   iconData: <Fragment><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 640 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M624 448h-80V113.45C544 86.19 522.47 64 496 64H384v64h96v384h144c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM312.24 1.01l-192 49.74C105.99 54.44 96 67.7 96 82.92V448H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h336V33.18c0-21.58-19.56-37.41-39.76-32.17zM264 288c-13.25 0-24-14.33-24-32s10.75-32 24-32 24 14.33 24 32-10.75 32-24 32z"></path></svg></Fragment>
+                },
+                {
+                  tooltip: "Open Catalog",
+                  condition: true,
+                  onClickEvent: (projectActions, itemsActions, linesActions, holesActions) => {
+                    projectActions.openCatalog()
+                  },
+                  iconData: (
+                    <React.Fragment>
+                      <svg
+                        stroke="currentColor"
+                        fill="currentColor"
+                        strokeWidth="0"
+                        viewBox="0 0 448 512"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
+                      </svg>
+                    </React.Fragment>
+                  ),
                 }
               ]
             }}
