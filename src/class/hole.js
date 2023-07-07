@@ -1,5 +1,5 @@
-import {Map, List, fromJS} from 'immutable';
-import {Layer, Group} from './export';
+import { Map, List, fromJS } from 'immutable';
+import { Layer, Group } from './export';
 
 import {
   IDBroker,
@@ -39,14 +39,14 @@ class Hole {
     state = state.updateIn(['scene', 'layers', layerID, 'lines', lineID, 'holes'],
       holes => holes.push(holeID));
 
-    return {updatedState: state, hole};
+    return { updatedState: state, hole };
   }
 
   static select(state, layerID, holeID) {
     state = Layer.select(state, layerID).updatedState;
     state = Layer.selectElement(state, layerID, 'holes', holeID).updatedState;
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static remove(state, layerID, holeID) {
@@ -61,23 +61,23 @@ class Hole {
 
     state.getIn(['scene', 'groups']).forEach(group => state = Group.removeElement(state, group.id, layerID, 'holes', holeID).updatedState);
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static unselect(state, layerID, holeID) {
     state = Layer.unselect(state, layerID, 'holes', holeID).updatedState;
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static selectToolDrawingHole(state, sceneComponentType) {
 
     let snapElements = (new List()).withMutations(snapElements => {
-      let {lines, vertices} = state.getIn(['scene', 'layers', state.scene.selectedLayer]);
+      let { lines, vertices } = state.getIn(['scene', 'layers', state.scene.selectedLayer]);
 
       lines.forEach(line => {
-        let {x: x1, y: y1} = vertices.get(line.vertices.get(0));
-        let {x: x2, y: y2} = vertices.get(line.vertices.get(1));
+        let { x: x1, y: y1 } = vertices.get(line.vertices.get(0));
+        let { x: x2, y: y2 } = vertices.get(line.vertices.get(1));
 
         addLineSegmentSnap(snapElements, x1, y1, x2, y2, 20, 1, line.id);
       });
@@ -91,7 +91,7 @@ class Hole {
       })
     });
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static updateDrawingHole(state, layerID, x, y) {
@@ -99,8 +99,8 @@ class Hole {
 
     //calculate snap and overwrite coords if needed
     //force snap to segment
-    let snap = nearestSnap(state.snapElements, x, y, state.snapMask.merge({SNAP_SEGMENT: true}));
-    if (snap) ({x, y} = snap.point);
+    let snap = nearestSnap(state.snapElements, x, y, state.snapMask.merge({ SNAP_SEGMENT: true }));
+    if (snap) ({ x, y } = snap.point);
 
     let selectedHole = state.getIn(['scene', 'layers', layerID, 'selected', 'holes']).first();
 
@@ -108,12 +108,12 @@ class Hole {
       let lineID = snap.snap.related.get(0);
 
       let vertices = state.getIn(['scene', 'layers', layerID, 'lines', lineID, 'vertices']);
-      let {x: x1, y: y1} = state.getIn(['scene', 'layers', layerID, 'vertices', vertices.get(0)]);
-      let {x: x2, y: y2} = state.getIn(['scene', 'layers', layerID, 'vertices', vertices.get(1)]);
+      let { x: x1, y: y1 } = state.getIn(['scene', 'layers', layerID, 'vertices', vertices.get(0)]);
+      let { x: x2, y: y2 } = state.getIn(['scene', 'layers', layerID, 'vertices', vertices.get(1)]);
 
       // I need min and max vertices on this line segment
-      let minVertex = GeometryUtils.minVertex({x: x1, y: y1}, {x: x2, y: y2});
-      let maxVertex = GeometryUtils.maxVertex({x: x1, y: y1}, {x: x2, y: y2});
+      let minVertex = GeometryUtils.minVertex({ x: x1, y: y1 }, { x: x2, y: y2 });
+      let maxVertex = GeometryUtils.maxVertex({ x: x1, y: y1 }, { x: x2, y: y2 });
       let width = catalog.factoryElement(state.drawingSupport.get('type')).properties.getIn(['width', 'length']);
 
       // Now I need min and max possible coordinates for the hole on the line. They depend on the width of the hole
@@ -165,7 +165,7 @@ class Hole {
 
       //if hole does exist, update
       if (selectedHole && snap) {
-        state = state.mergeIn(['scene', 'layers', layerID, 'holes', selectedHole], {offset, line: lineID});
+        state = state.mergeIn(['scene', 'layers', layerID, 'holes', selectedHole], { offset, line: lineID });
 
         //remove from old line ( if present )
         let index = state.getIn(['scene', 'layers', layerID, 'lines']).findEntry(line => {
@@ -184,7 +184,7 @@ class Hole {
         }
       } else if (!selectedHole && snap) {
         //if hole does not exist, create
-        let {updatedState: stateH, hole} = this.create(state, layerID, state.drawingSupport.get('type'), lineID, offset);
+        let { updatedState: stateH, hole } = this.create(state, layerID, state.drawingSupport.get('type'), lineID, offset);
         state = Hole.select(stateH, layerID, hole.id).updatedState;
       }
     }
@@ -194,14 +194,14 @@ class Hole {
       state = Hole.remove(state, layerID, selectedHole).updatedState;
     }
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static endDrawingHole(state, layerID, x, y) {
     state = this.updateDrawingHole(state, layerID, x, y).updatedState;
     state = Layer.unselectAll(state, layerID).updatedState;
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static beginDraggingHole(state, layerID, holeID, x, y) {
@@ -224,17 +224,17 @@ class Hole {
       })
     });
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static updateDraggingHole(state, x, y) {
 
     //calculate snap and overwrite coords if needed
     //force snap to segment
-    let snap = nearestSnap(state.snapElements, x, y, state.snapMask.merge({SNAP_SEGMENT: true}));
+    let snap = nearestSnap(state.snapElements, x, y, state.snapMask.merge({ SNAP_SEGMENT: true }));
     if (!snap) return state;
 
-    let {draggingSupport, scene} = state;
+    let { draggingSupport, scene } = state;
 
     let layerID = draggingSupport.get('layerID');
     let holeID = draggingSupport.get('holeID');
@@ -247,7 +247,7 @@ class Hole {
     let v0 = layer.getIn(['vertices', line.vertices.get(0)]);
     let v1 = layer.getIn(['vertices', line.vertices.get(1)]);
 
-    ({x, y} = snap.point);
+    ({ x, y } = snap.point);
 
     // I need min and max vertices on this line segment
     let minVertex = GeometryUtils.minVertex(v0, v1);
@@ -333,20 +333,20 @@ class Hole {
       scene: scene.mergeIn(['layers', layerID, 'holes', holeID], hole)
     });
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static endDraggingHole(state, x, y) {
     state = this.updateDraggingHole(state, x, y).updatedState;
-    state = state.merge({mode: MODE_IDLE});
+    state = state.merge({ mode: MODE_IDLE });
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static setProperties(state, layerID, holeID, properties) {
     state = state.setIn(['scene', 'layers', layerID, 'holes', holeID, 'properties'], properties);
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static setJsProperties(state, layerID, holeID, properties) {
@@ -359,7 +359,7 @@ class Hole {
         state = state.mergeIn(['scene', 'layers', layerID, 'holes', holeID, 'properties', k], v);
     });
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
   static updateJsProperties(state, layerID, holeID, properties) {
@@ -369,21 +369,21 @@ class Hole {
   static setAttributes(state, layerID, holeID, holesAttributes) {
 
     let hAttr = holesAttributes.toJS();
-    let {offsetA, offsetB, offset} = hAttr;
+    let { offsetA, offsetB, offset } = hAttr;
 
     delete hAttr['offsetA'];
     delete hAttr['offsetB'];
     delete hAttr['offset'];
 
-    let misc = new Map({_unitA: offsetA._unit, _unitB: offsetB._unit});
+    let misc = new Map({ _unitA: offsetA._unit, _unitB: offsetB._unit });
 
     state = state
       .mergeIn(['scene', 'layers', layerID, 'holes', holeID], fromJS(hAttr))
-      .mergeDeepIn(['scene', 'layers', layerID, 'holes', holeID], new Map({offset, misc}));
+      .mergeDeepIn(['scene', 'layers', layerID, 'holes', holeID], new Map({ offset, misc }));
 
-    return {updatedState: state};
+    return { updatedState: state };
   }
 
 }
 
-export {Hole as default};
+export { Hole as default };
