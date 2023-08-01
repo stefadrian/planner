@@ -259,7 +259,7 @@ export default class Toolbar extends Component {
     let addSorter = []
 
     let index = 0;
-    toolbarProps?.buttons?.map(element => {
+    toolbarProps?.buttons.map(element => {
       addSorter.push(
         {
           index: index,
