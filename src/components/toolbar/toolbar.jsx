@@ -144,19 +144,19 @@ export default class Toolbar extends Component {
       //     </ToolbarButton>
       //   ),
       // },
-      {
-        index: 20,
-        condition: true,
-        dom: (
-          <ToolbarButton
-            active={false}
-            tooltip={translator.t("Undo (CTRL-Z)")}
-            onClick={(event) => projectActions.undo()}
-          >
-            <MdUndo />
-          </ToolbarButton>
-        ),
-      },
+      // {
+      //   index: 20,
+      //   condition: true,
+      //   dom: (
+      //     <ToolbarButton
+      //       active={false}
+      //       tooltip={translator.t("Undo (CTRL-Z)")}
+      //       onClick={(event) => projectActions.undo()}
+      //     >
+      //       <MdUndo />
+      //     </ToolbarButton>
+      //   ),
+      // },
       // {
       //   index: 0,
       //   condition: allowProjectFileSupport,
@@ -259,7 +259,7 @@ export default class Toolbar extends Component {
     let addSorter = []
 
     let index = 0;
-    toolbarProps.buttons.map(element => {
+    toolbarProps?.buttons?.map(element => {
       addSorter.push(
         {
           index: index,
