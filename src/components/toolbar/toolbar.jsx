@@ -259,24 +259,26 @@ export default class Toolbar extends Component {
     let addSorter = []
 
     let index = 0;
-    toolbarProps?.buttons.map(element => {
-      addSorter.push(
-        {
-          index: index,
-          condition: element.condition,
-          dom: (
-            <ToolbarButton
-              active={false}
-              tooltip={element.tooltip}
-              onClick={() => element.onClickEvent(projectActions, itemsActions, linesActions, holesActions)}
-            >
-              {element.iconData}
-            </ToolbarButton>
-          ),
-        }
-      )
-      index++;
-    })
+    if (toolbarProps?.buttons.length > 0) {
+      toolbarProps.buttons.map(element => {
+        addSorter.push(
+          {
+            index: index,
+            condition: element.condition,
+            dom: (
+              <ToolbarButton
+                active={false}
+                tooltip={element.tooltip}
+                onClick={() => element.onClickEvent(projectActions, itemsActions, linesActions, holesActions)}
+              >
+                {element.iconData}
+              </ToolbarButton>
+            ),
+          }
+        )
+        index++;
+      })
+    }
 
     let finalSorter = addSorter.concat(sorter)
 
