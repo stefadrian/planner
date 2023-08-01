@@ -259,7 +259,7 @@ export default class Toolbar extends Component {
     let addSorter = []
 
     let index = 0;
-    if (toolbarProps?.buttons.length > 0) {
+    if (toolbarProps && toolbarProps.buttons && toolbarProps.buttons.length > 0) {
       toolbarProps.buttons.map(element => {
         addSorter.push(
           {
