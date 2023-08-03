@@ -1,7 +1,8 @@
 import React from 'react';
-import { createArea, updatedArea } from './area-factory-3d';
+
 import * as SharedStyle from '../../shared-style';
 import Translator from '../../translator/translator';
+import { createArea, updatedArea } from './area-factory-3d';
 
 let translator = new Translator();
 
@@ -75,7 +76,7 @@ export default function AreaFactory(name, info, textures) {
     }
 
     areaElement.properties.texture = {
-      label: translator.t('texture'),
+      label: 'Floor Finishing',
       type: 'enum',
       defaultValue: 'none',
       values: textureValues
