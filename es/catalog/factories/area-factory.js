@@ -1,9 +1,10 @@
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 import React from 'react';
-import { createArea, updatedArea } from './area-factory-3d';
+
 import * as SharedStyle from '../../shared-style';
 import Translator from '../../translator/translator';
+import { createArea, updatedArea } from './area-factory-3d';
 
 var translator = new Translator();
 
@@ -75,7 +76,7 @@ export default function AreaFactory(name, info, textures) {
     }
 
     areaElement.properties.texture = {
-      label: translator.t('texture'),
+      label: 'Floor Finishing',
       type: 'enum',
       defaultValue: 'none',
       values: textureValues

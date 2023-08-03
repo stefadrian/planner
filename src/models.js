@@ -1,5 +1,6 @@
-import { Record, List, Map, fromJS } from "immutable";
-import { MODE_IDLE } from "./constants";
+import { fromJS, List, Map, Record } from "immutable";
+
+import { MODE_2D_ZOOM_OUT, MODE_IDLE } from "./constants";
 import { SNAP_MASK } from "./utils/snap";
 
 let safeLoadMapList = (mapList, Model, defaultMap) => {

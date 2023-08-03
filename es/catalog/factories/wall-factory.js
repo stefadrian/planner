@@ -1,10 +1,11 @@
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 import React from 'react';
-import { buildWall, updatedWall } from './wall-factory-3d';
+
 import * as SharedStyle from '../../shared-style';
-import * as Geometry from '../../utils/geometry';
 import Translator from '../../translator/translator';
+import * as Geometry from '../../utils/geometry';
+import { buildWall, updatedWall } from './wall-factory-3d';
 
 var epsilon = 20;
 var STYLE_TEXT = { textAnchor: 'middle' };
@@ -85,7 +86,6 @@ export default function WallFactory(name, info, textures) {
   };
 
   if (textures && textures !== {}) {
-
     var textureValues = { 'none': 'None' };
 
     for (var textureName in textures) {
@@ -93,14 +93,14 @@ export default function WallFactory(name, info, textures) {
     }
 
     wallElement.properties.textureA = {
-      label: translator.t('texture') + ' Inside',
+      label: 'Left Side Finishing',
       type: 'enum',
       defaultValue: textureValues.bricks ? 'bricks' : 'none',
       values: textureValues
     };
 
     wallElement.properties.textureB = {
-      label: translator.t('texture') + ' Outside',
+      label: 'Right Side Finishing',
       type: 'enum',
       defaultValue: textureValues.bricks ? 'bricks' : 'none',
       values: textureValues

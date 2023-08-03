@@ -1,4 +1,5 @@
 import React from 'react';
+
 import * as SharedStyle from '../../shared-style';
 
 const BASE_STYLE = {

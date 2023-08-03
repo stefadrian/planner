@@ -11,7 +11,7 @@ import * as SharedStyle from "../../shared-style";
 import If from "../../utils/react-if";
 
 const STYLE = {
-  backgroundColor: SharedStyle.PRIMARY_COLOR.main,
+  backgroundColor: '#202020',
   display: "block",
   overflowY: "auto",
   overflowX: "hidden",
