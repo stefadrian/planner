@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect, useRef } from 'react';
 import { ReactSVGPanZoom, TOOL_AUTO, TOOL_NONE, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT } from "react-svg-pan-zoom";
 
 import * as constants from "../../constants";
@@ -326,6 +326,11 @@ export default function Viewer2D(_ref, _ref2) {
   var rulerXElements = Math.ceil(sceneWidth / rulerUnitPixelSize) + 1;
   var rulerYElements = Math.ceil(sceneHeight / rulerUnitPixelSize) + 1;
 
+  var Viewer = useRef(null);
+  useEffect(function () {
+    Viewer.current.fitToViewer();
+  }, []);
+
   return React.createElement(
     "div",
     {
@@ -394,6 +399,7 @@ export default function Viewer2D(_ref, _ref2) {
     React.createElement(
       ReactSVGPanZoom,
       {
+        ref: Viewer,
         style: { gridColumn: 2, gridRow: 2 },
         width: width - rulerSize,
         height: height - rulerSize,
