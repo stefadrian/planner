@@ -1,8 +1,9 @@
 import React from 'react';
-import { buildWall, updatedWall } from './wall-factory-3d';
+
 import * as SharedStyle from '../../shared-style';
-import * as Geometry from '../../utils/geometry';
 import Translator from '../../translator/translator';
+import * as Geometry from '../../utils/geometry';
+import { buildWall, updatedWall } from './wall-factory-3d';
 
 const epsilon = 20;
 const STYLE_TEXT = { textAnchor: 'middle' };
@@ -70,7 +71,6 @@ export default function WallFactory(name, info, textures) {
   };
 
   if (textures && textures !== {}) {
-
     let textureValues = { 'none': 'None' };
 
     for (let textureName in textures) {
@@ -81,14 +81,14 @@ export default function WallFactory(name, info, textures) {
       label: translator.t('texture') + ' Inside',
       type: 'enum',
       defaultValue: textureValues.bricks ? 'bricks' : 'none',
-      values: textureValues
+      values: textureValues,
     };
 
     wallElement.properties.textureB = {
       label: translator.t('texture') + ' Outside',
       type: 'enum',
       defaultValue: textureValues.bricks ? 'bricks' : 'none',
-      values: textureValues
+      values: textureValues,
     };
 
   }

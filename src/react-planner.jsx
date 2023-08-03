@@ -1,18 +1,13 @@
-import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { bindActionCreators } from "redux";
+import React, { Component } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import Translator from "./translator/translator";
-import Catalog from "./catalog/catalog";
 import actions from "./actions/export";
+import Catalog from "./catalog/catalog";
+import { Content, FooterBarComponents, SidebarComponents, ToolbarComponents } from "./components/export";
+import Translator from "./translator/translator";
 import { objectsMap } from "./utils/objects-utils";
-import {
-  ToolbarComponents,
-  Content,
-  SidebarComponents,
-  FooterBarComponents,
-} from "./components/export";
 import { VERSION } from "./version";
 
 const { Toolbar } = ToolbarComponents;
@@ -64,6 +59,7 @@ class ReactPlanner extends Component {
       stateExtractor,
       disableSideBar = false,
       disableFooterBar = false,
+      disableToolBar = false,
       toolbarProps = {
         orientation: 'vertical'
       },
@@ -72,7 +68,7 @@ class ReactPlanner extends Component {
 
     let toolbarW = 50;
 
-    let contentW = width - toolbarW;
+    let contentW = width;
 
     if (!disableSideBar) {
       contentW -= sidebarW;
@@ -88,10 +84,17 @@ class ReactPlanner extends Component {
       sidebarH -= footerBarH;
     }
 
+
     if (toolbarProps.orientation === 'horizontal') {
       toolbarW = contentW;
       toolbarH = 70;
-      contentH -= toolbarH;
+      if(!disableToolBar){
+        contentH -= toolbarH;
+      }
+    }else{
+      if(!disableToolBar){
+        contentW -= toolbarW;
+      }
     }
 
     let extractedState = stateExtractor(state);
@@ -103,6 +106,7 @@ class ReactPlanner extends Component {
 
     return (
       <div style={{ ...wrapperCss, height }}>
+      {!disableToolBar && (
         <Toolbar
           width={toolbarW}
           height={toolbarH}
@@ -110,6 +114,7 @@ class ReactPlanner extends Component {
           toolbarProps={toolbarProps}
           {...props}
         />
+        )}
         <Content
           width={contentW}
           height={contentH}

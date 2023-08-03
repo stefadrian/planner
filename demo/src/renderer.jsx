@@ -1,21 +1,17 @@
-import React, { Fragment } from "react";
-import ReactDOM from "react-dom";
-import ContainerDimensions from "react-container-dimensions";
 import Immutable, { Map } from "immutable";
 import immutableDevtools from "immutable-devtools";
-import { createStore } from "redux";
+import React, { Fragment } from "react";
+import ContainerDimensions from "react-container-dimensions";
+import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import { createStore } from "redux";
+
+import { Models as PlannerModels, Plugins as PlannerPlugins, reducer as PlannerReducer, ReactPlanner } from "react-planner";
 
 import MyCatalog from "./catalog/mycatalog";
-
 import ToolbarScreenshotButton from "./ui/toolbar-screenshot-button";
 
-import {
-  Models as PlannerModels,
-  reducer as PlannerReducer,
-  ReactPlanner,
-  Plugins as PlannerPlugins,
-} from "react-planner"; //react-planner
+//react-planner
 
 //define state
 let AppState = Map({
@@ -97,13 +93,14 @@ ReactDOM.render(
         >
           <ReactPlanner
             catalog={MyCatalog}
-            width={1000}
-            height={800}
+            width={1700}
+            height={850}
             plugins={plugins}
             toolbarButtons={toolbarButtons}
             stateExtractor={(state) => state.get("react-planner")}
             disableFooterBar={true}
             disableSideBar={false}
+            disableToolBar={false}
             onSaveAction={undefined}
             toolbarProps={{
               orientation: "horizontal",

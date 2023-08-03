@@ -1,6 +1,7 @@
-import React from 'react';
+import { Seq } from 'immutable';
 import PropTypes from 'prop-types';
-import {Seq} from 'immutable';
+import React from 'react';
+
 import { FormLabel, FormSelect } from '../../components/style/export';
 import PropertyStyle from './shared-property-style';
 

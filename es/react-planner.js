@@ -10,16 +10,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { bindActionCreators } from "redux";
+import React, { Component } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import Translator from "./translator/translator";
-import Catalog from "./catalog/catalog";
 import actions from "./actions/export";
+import Catalog from "./catalog/catalog";
+import { Content, FooterBarComponents, SidebarComponents, ToolbarComponents } from "./components/export";
+import Translator from "./translator/translator";
 import { objectsMap } from "./utils/objects-utils";
-import { ToolbarComponents, Content, SidebarComponents, FooterBarComponents } from "./components/export";
 import { VERSION } from "./version";
 
 var Toolbar = ToolbarComponents.Toolbar;
@@ -101,15 +101,17 @@ var ReactPlanner = function (_Component) {
           disableSideBar = _props2$disableSideBa === undefined ? false : _props2$disableSideBa,
           _props2$disableFooter = _props2.disableFooterBar,
           disableFooterBar = _props2$disableFooter === undefined ? false : _props2$disableFooter,
+          _props2$disableToolBa = _props2.disableToolBar,
+          disableToolBar = _props2$disableToolBa === undefined ? false : _props2$disableToolBa,
           _props2$toolbarProps = _props2.toolbarProps,
           toolbarProps = _props2$toolbarProps === undefined ? {
         orientation: 'vertical'
       } : _props2$toolbarProps,
-          props = _objectWithoutProperties(_props2, ["width", "height", "state", "stateExtractor", "disableSideBar", "disableFooterBar", "toolbarProps"]);
+          props = _objectWithoutProperties(_props2, ["width", "height", "state", "stateExtractor", "disableSideBar", "disableFooterBar", "disableToolBar", "toolbarProps"]);
 
       var toolbarW = 50;
 
-      var contentW = width - toolbarW;
+      var contentW = width;
 
       if (!disableSideBar) {
         contentW -= sidebarW;
@@ -130,7 +132,13 @@ var ReactPlanner = function (_Component) {
       if (toolbarProps.orientation === 'horizontal') {
         toolbarW = contentW;
         toolbarH = 70;
-        contentH -= toolbarH;
+        if (!disableToolBar) {
+          contentH -= toolbarH;
+        }
+      } else {
+        if (!disableToolBar) {
+          contentW -= toolbarW;
+        }
       }
 
       var extractedState = stateExtractor(state);
@@ -143,7 +151,7 @@ var ReactPlanner = function (_Component) {
       return React.createElement(
         "div",
         { style: _extends({}, wrapperCss, { height: height }) },
-        React.createElement(Toolbar, _extends({
+        !disableToolBar && React.createElement(Toolbar, _extends({
           width: toolbarW,
           height: toolbarH,
           state: extractedState,

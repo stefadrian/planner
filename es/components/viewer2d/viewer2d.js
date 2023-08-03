@@ -1,11 +1,11 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
+import { ReactSVGPanZoom, TOOL_AUTO, TOOL_NONE, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT } from "react-svg-pan-zoom";
 
-import { ReactSVGPanZoom, TOOL_NONE, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT, TOOL_AUTO } from "react-svg-pan-zoom";
 import * as constants from "../../constants";
-import State from "./state";
 import * as SharedStyle from "../../shared-style";
 import { RulerX, RulerY } from "./export";
+import State from "./state";
 
 function mode2Tool(mode) {
   switch (mode) {
@@ -317,7 +317,7 @@ export default function Viewer2D(_ref, _ref2) {
 
   var rulerSize = 15; //px
   var rulerUnitPixelSize = 100;
-  var rulerBgColor = SharedStyle.PRIMARY_COLOR.main;
+  var rulerBgColor = '#202020';
   var rulerFnColor = SharedStyle.COLORS.white;
   var rulerMkColor = SharedStyle.SECONDARY_COLOR.main;
   var sceneWidth = SVGWidth || state.getIn(["scene", "width"]);

@@ -8,10 +8,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as SharedStyle from '../../shared-style';
+import React, { Component } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+
+import * as SharedStyle from '../../shared-style';
 
 var STYLE = {
   borderTop: '1px solid #222',
@@ -22,8 +23,8 @@ var STYLE_TITLE = {
   fontSize: '11px',
   color: SharedStyle.PRIMARY_COLOR.text_alt,
   padding: '5px 15px 8px 15px',
-  backgroundColor: SharedStyle.PRIMARY_COLOR.alt,
-  textShadow: '-1px -1px 2px rgba(0, 0, 0, 1)',
+  backgroundColor: '#202020',
+  // textShadow: '-1px -1px 2px rgba(0, 0, 0, 1)',
   boxShadow: 'inset 0px -3px 19px 0px rgba(0,0,0,0.5)',
   margin: '0px',
   cursor: 'pointer'
@@ -33,8 +34,8 @@ var STYLE_CONTENT = {
   color: SharedStyle.PRIMARY_COLOR.text_alt,
   border: '1px solid #222',
   padding: '0px',
-  backgroundColor: SharedStyle.PRIMARY_COLOR.alt,
-  textShadow: '-1px -1px 2px rgba(0, 0, 0, 1)'
+  backgroundColor: '#202020'
+  // textShadow: '-1px -1px 2px rgba(0, 0, 0, 1)'
 };
 var STYLE_ARROW = {
   float: 'right'
