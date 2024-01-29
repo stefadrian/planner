@@ -116,12 +116,9 @@ class Project{
 
   static rollback(state) {
     let sceneHistory = state.sceneHistory;
-
     if (!sceneHistory.last && sceneHistory.list.isEmpty()) {
       return { updatedState: state };
     }
-
-    state = this.unselectAll( state ).updatedState;
 
     state = state.merge({
       mode: MODE_IDLE,
@@ -134,6 +131,8 @@ class Project{
       rotatingSupport: new Map(),
     });
 
+    state = this.unselectAll(state).updatedState;
+    
     return { updatedState: state };
   }
 
