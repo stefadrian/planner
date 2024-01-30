@@ -7,6 +7,7 @@ import { MODE_VIEWING_CATALOG, MODE_CONFIGURING_PROJECT, MODE_IDLE } from '../co
 import { State, Catalog } from '../models';
 import { history } from '../utils/export';
 import { Layer, Group, Line, Hole, Item, HorizontalGuide, VerticalGuide } from '../class/export';
+import { IDBroker } from "../utils/export";
 
 var Project = function () {
   function Project() {
@@ -16,7 +17,7 @@ var Project = function () {
   _createClass(Project, null, [{
     key: 'setAlterate',
     value: function setAlterate(state) {
-      return { updatedState: state.set('alterate', !state.alterate) };
+      return { updatedState: state.set("alterate", !state.alterate) };
     }
   }, {
     key: 'openCatalog',
@@ -28,7 +29,7 @@ var Project = function () {
   }, {
     key: 'newProject',
     value: function newProject(state) {
-      state = new State({ 'viewer2D': state.get('viewer2D') });
+      state = new State({ viewer2D: state.get("viewer2D") });
 
       return { updatedState: state };
     }
@@ -57,7 +58,7 @@ var Project = function () {
     key: 'setItemsAttributes',
     value: function setItemsAttributes(state, attributes) {
       //TODO apply only to items
-      state.getIn(['scene', 'layers']).forEach(function (layer) {
+      state.getIn(["scene", "layers"]).forEach(function (layer) {
         state = Layer.setAttributesOnSelected(state, layer.id, attributes).updatedState;
       });
 
@@ -67,7 +68,7 @@ var Project = function () {
     key: 'setLinesAttributes',
     value: function setLinesAttributes(state, attributes) {
       //TODO apply only to lines
-      state.getIn(['scene', 'layers']).forEach(function (layer) {
+      state.getIn(["scene", "layers"]).forEach(function (layer) {
         state = Layer.setAttributesOnSelected(state, layer.id, attributes).updatedState;
       });
 
@@ -77,7 +78,7 @@ var Project = function () {
     key: 'setHolesAttributes',
     value: function setHolesAttributes(state, attributes) {
       //TODO apply only to holes
-      state.getIn(['scene', 'layers']).forEach(function (layer) {
+      state.getIn(["scene", "layers"]).forEach(function (layer) {
         state = Layer.setAttributesOnSelected(state, layer.id, attributes).updatedState;
       });
 
@@ -86,12 +87,13 @@ var Project = function () {
   }, {
     key: 'unselectAll',
     value: function unselectAll(state) {
-      state.getIn(['scene', 'layers']).forEach(function (_ref) {
+      state.getIn(["scene", "layers"]).forEach(function (_ref) {
         var layerID = _ref.id;
+
         state = Layer.unselectAll(state, layerID).updatedState;
       });
-      state.getIn(['scene', 'groups']).forEach(function (group) {
-        state = Group.unselect(state, group.get('id')).updatedState;
+      state.getIn(["scene", "groups"]).forEach(function (group) {
+        state = Group.unselect(state, group.get("id")).updatedState;
       });
 
       return { updatedState: state };
@@ -99,9 +101,9 @@ var Project = function () {
   }, {
     key: 'remove',
     value: function remove(state) {
-      var selectedLayer = state.getIn(['scene', 'selectedLayer']);
+      var selectedLayer = state.getIn(["scene", "selectedLayer"]);
 
-      var _state$getIn = state.getIn(['scene', 'layers', selectedLayer, 'selected']),
+      var _state$getIn = state.getIn(["scene", "layers", selectedLayer, "selected"]),
           selectedLines = _state$getIn.lines,
           selectedHoles = _state$getIn.holes,
           selectedItems = _state$getIn.items;
@@ -119,6 +121,32 @@ var Project = function () {
       });
 
       state = Layer.detectAndUpdateAreas(state, selectedLayer).updatedState;
+
+      return { updatedState: state };
+    }
+  }, {
+    key: 'duplicate',
+    value: function duplicate(state) {
+      var selectedLayer = state.getIn(["scene", "selectedLayer"]);
+
+      var _state$getIn2 = state.getIn(["scene", "layers", selectedLayer, "selected"]),
+          selectedHoles = _state$getIn2.holes;
+
+      state = Layer.unselectAll(state, selectedLayer).updatedState;
+
+      selectedHoles.forEach(function (holeID) {
+        var duplicateElement = state.scene.layers.get(selectedLayer).holes.get(holeID);
+
+        var width = duplicateElement.get("offset") + 0.1 > 1 ? duplicateElement.get("offset") - 0.1 : duplicateElement.get("offset") + 0.1;
+
+        var _Hole$create = Hole.create(state, selectedLayer, duplicateElement.get("type"), duplicateElement.get("line"), width, duplicateElement.get("properties")),
+            updatedState = _Hole$create.updatedState,
+            hole = _Hole$create.hole;
+
+        state = updatedState;
+        state = Layer.select(state, selectedLayer).updatedState;
+        state = Layer.selectElement(state, selectedLayer, hole.prototype, hole.id).updatedState;
+      });
 
       return { updatedState: state };
     }
@@ -184,34 +212,34 @@ var Project = function () {
   }, {
     key: 'initCatalog',
     value: function initCatalog(state, catalog) {
-      state = state.set('catalog', new Catalog(catalog));
+      state = state.set("catalog", new Catalog(catalog));
 
       return { updatedState: state };
     }
   }, {
     key: 'updateMouseCoord',
     value: function updateMouseCoord(state, coords) {
-      state = state.set('mouse', new Map(coords));
+      state = state.set("mouse", new Map(coords));
 
       return { updatedState: state };
     }
   }, {
     key: 'updateZoomScale',
     value: function updateZoomScale(state, scale) {
-      state = state.set('zoom', scale);
+      state = state.set("zoom", scale);
 
       return { updatedState: state };
     }
   }, {
     key: 'toggleSnap',
     value: function toggleSnap(state, mask) {
-      state = state.set('snapMask', mask);
+      state = state.set("snapMask", mask);
       return { updatedState: state };
     }
   }, {
     key: 'throwError',
     value: function throwError(state, error) {
-      state = state.set('errors', state.get('errors').push({
+      state = state.set("errors", state.get("errors").push({
         date: Date.now(),
         error: error
       }));
@@ -221,7 +249,7 @@ var Project = function () {
   }, {
     key: 'throwWarning',
     value: function throwWarning(state, warning) {
-      state = state.set('warnings', state.get('warnings').push({
+      state = state.set("warnings", state.get("warnings").push({
         date: Date.now(),
         warning: warning
       }));
@@ -231,14 +259,14 @@ var Project = function () {
   }, {
     key: 'copyProperties',
     value: function copyProperties(state, properties) {
-      state = state.set('clipboardProperties', properties);
+      state = state.set("clipboardProperties", properties);
 
       return { updatedState: state };
     }
   }, {
     key: 'pasteProperties',
     value: function pasteProperties(state) {
-      state = this.updateProperties(state, state.getIn(['scene', 'selectedLayer']), state.get('clipboardProperties')).updatedState;
+      state = this.updateProperties(state, state.getIn(["scene", "selectedLayer"]), state.get("clipboardProperties")).updatedState;
 
       return { updatedState: state };
     }
@@ -255,13 +283,13 @@ var Project = function () {
       }
       currHistory = currHistory.splice(0, 0, element);
 
-      state = state.set('selectedElementsHistory', currHistory);
+      state = state.set("selectedElementsHistory", currHistory);
       return { updatedState: state };
     }
   }, {
     key: 'changeCatalogPage',
     value: function changeCatalogPage(state, oldPage, newPage) {
-      state = state.setIn(['catalog', 'page'], newPage).updateIn(['catalog', 'path'], function (path) {
+      state = state.setIn(["catalog", "page"], newPage).updateIn(["catalog", "path"], function (path) {
         return path.push(oldPage);
       });
 
@@ -273,7 +301,7 @@ var Project = function () {
       var pageIndex = state.catalog.path.findIndex(function (page) {
         return page === newPage;
       });
-      state = state.setIn(['catalog', 'page'], newPage).updateIn(['catalog', 'path'], function (path) {
+      state = state.setIn(["catalog", "page"], newPage).updateIn(["catalog", "path"], function (path) {
         return path.take(pageIndex);
       });
 
@@ -282,7 +310,7 @@ var Project = function () {
   }, {
     key: 'setMode',
     value: function setMode(state, mode) {
-      state = state.set('mode', mode);
+      state = state.set("mode", mode);
       return { updatedState: state };
     }
   }, {
@@ -302,7 +330,7 @@ var Project = function () {
   }, {
     key: 'addCircularGuide',
     value: function addCircularGuide(state, x, y, radius) {
-      console.log('adding horizontal guide at', x, y, radius);
+      console.log("adding horizontal guide at", x, y, radius);
 
       return { updatedState: state };
     }
@@ -323,7 +351,7 @@ var Project = function () {
   }, {
     key: 'removeCircularGuide',
     value: function removeCircularGuide(state, guideID) {
-      console.log('removeing horizontal guide ', guideID);
+      console.log("removeing horizontal guide ", guideID);
 
       return { updatedState: state };
     }

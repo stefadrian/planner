@@ -18,29 +18,30 @@ import { GeometryUtils, MathUtils } from '../../../utils/export';
 import * as SharedStyle from '../../../shared-style';
 import convert from 'convert-units';
 import { MdContentCopy, MdContentPaste } from 'react-icons/md';
+import Button from "../../style/button";
 
 var PRECISION = 2;
 
 var attrPorpSeparatorStyle = {
-  margin: '0.5em 0.25em 0.5em 0',
-  border: '2px solid ' + SharedStyle.SECONDARY_COLOR.alt,
-  position: 'relative',
-  height: '2.5em',
-  borderRadius: '2px'
+  margin: "0.5em 0.25em 0.5em 0",
+  border: "2px solid " + SharedStyle.SECONDARY_COLOR.alt,
+  position: "relative",
+  height: "2.5em",
+  borderRadius: "2px"
 };
 
 var headActionStyle = {
-  position: 'absolute',
-  right: '0.5em',
-  top: '0.5em'
+  position: "absolute",
+  right: "0.5em",
+  top: "0.5em"
 };
 
 var iconHeadStyle = {
-  float: 'right',
-  margin: '-3px 4px 0px 0px',
+  float: "right",
+  margin: "-3px 4px 0px 0px",
   padding: 0,
-  cursor: 'pointer',
-  fontSize: '1.4em'
+  cursor: "pointer",
+  fontSize: "1.4em"
 };
 
 var ElementEditor = function (_Component) {
@@ -55,12 +56,23 @@ var ElementEditor = function (_Component) {
       attributesFormData: _this.initAttrData(_this.props.element, _this.props.layer, _this.props.state),
       propertiesFormData: _this.initPropData(_this.props.element, _this.props.layer, _this.props.state)
     };
-
+    _this.remove = _this.remove.bind(_this);
+    _this.duplicate = _this.duplicate.bind(_this);
     _this.updateAttribute = _this.updateAttribute.bind(_this);
     return _this;
   }
 
   _createClass(ElementEditor, [{
+    key: 'remove',
+    value: function remove() {
+      this.context.projectActions.remove();
+    }
+  }, {
+    key: 'duplicate',
+    value: function duplicate() {
+      this.context.projectActions.duplicate();
+    }
+  }, {
     key: 'shouldComponentUpdate',
     value: function shouldComponentUpdate(nextProps, nextState) {
       if (this.state.attributesFormData.hashCode() !== nextState.attributesFormData.hashCode() || this.state.propertiesFormData.hashCode() !== nextState.propertiesFormData.hashCode() || this.props.state.clipboardProperties.hashCode() !== nextProps.state.clipboardProperties.hashCode()) return true;
@@ -76,8 +88,8 @@ var ElementEditor = function (_Component) {
       var prototype = element.prototype,
           id = element.id;
 
-      var scene = this.props.state.get('scene');
-      var selectedLayer = scene.getIn(['layers', scene.get('selectedLayer')]);
+      var scene = this.props.state.get("scene");
+      var selectedLayer = scene.getIn(["layers", scene.get("selectedLayer")]);
       var selected = selectedLayer.getIn([prototype, id]);
 
       if (selectedLayer.hashCode() !== layer.hashCode()) this.setState({
@@ -88,21 +100,20 @@ var ElementEditor = function (_Component) {
   }, {
     key: 'initAttrData',
     value: function initAttrData(element, layer, state) {
-
-      element = _typeof(element.misc) === 'object' ? element.set('misc', new Map(element.misc)) : element;
+      element = _typeof(element.misc) === "object" ? element.set("misc", new Map(element.misc)) : element;
 
       switch (element.prototype) {
-        case 'items':
+        case "items":
           {
             return new Map(element);
           }
-        case 'lines':
+        case "lines":
           {
             var v_a = layer.vertices.get(element.vertices.get(0));
             var v_b = layer.vertices.get(element.vertices.get(1));
 
             var distance = GeometryUtils.pointsDistance(v_a.x, v_a.y, v_b.x, v_b.y);
-            var _unit = element.misc.get('_unitLength') || this.context.catalog.unit;
+            var _unit = element.misc.get("_unitLength") || this.context.catalog.unit;
             var _length = convert(distance).from(this.context.catalog.unit).to(_unit);
 
             return new Map({
@@ -111,7 +122,7 @@ var ElementEditor = function (_Component) {
               lineLength: new Map({ length: distance, _length: _length, _unit: _unit })
             });
           }
-        case 'holes':
+        case "holes":
           {
             var line = layer.lines.get(element.line);
 
@@ -124,13 +135,13 @@ var ElementEditor = function (_Component) {
                 y1 = _layer$vertices$get2.y;
 
             var lineLength = GeometryUtils.pointsDistance(x0, y0, x1, y1);
-            var startAt = lineLength * element.offset - element.properties.get('width').get('length') / 2;
+            var startAt = lineLength * element.offset - element.properties.get("width").get("length") / 2;
 
-            var _unitA = element.misc.get('_unitA') || this.context.catalog.unit;
+            var _unitA = element.misc.get("_unitA") || this.context.catalog.unit;
             var _lengthA = convert(startAt).from(this.context.catalog.unit).to(_unitA);
 
-            var endAt = lineLength - lineLength * element.offset - element.properties.get('width').get('length') / 2;
-            var _unitB = element.misc.get('_unitB') || this.context.catalog.unit;
+            var endAt = lineLength - lineLength * element.offset - element.properties.get("width").get("length") / 2;
+            var _unitB = element.misc.get("_unitB") || this.context.catalog.unit;
             var _lengthB = convert(endAt).from(this.context.catalog.unit).to(_unitB);
 
             return new Map({
@@ -147,7 +158,7 @@ var ElementEditor = function (_Component) {
               })
             });
           }
-        case 'areas':
+        case "areas":
           {
             return new Map({});
           }
@@ -181,43 +192,43 @@ var ElementEditor = function (_Component) {
 
 
       switch (this.props.element.prototype) {
-        case 'items':
+        case "items":
           {
             attributesFormData = attributesFormData.set(attributeName, value);
             break;
           }
-        case 'lines':
+        case "lines":
           {
             switch (attributeName) {
-              case 'lineLength':
+              case "lineLength":
                 {
-                  var v_0 = attributesFormData.get('vertexOne');
-                  var v_1 = attributesFormData.get('vertexTwo');
+                  var v_0 = attributesFormData.get("vertexOne");
+                  var v_1 = attributesFormData.get("vertexTwo");
 
                   var _GeometryUtils$orderV = GeometryUtils.orderVertices([v_0, v_1]),
                       _GeometryUtils$orderV2 = _slicedToArray(_GeometryUtils$orderV, 2),
                       v_a = _GeometryUtils$orderV2[0],
                       v_b = _GeometryUtils$orderV2[1];
 
-                  var v_b_new = GeometryUtils.extendLine(v_a.x, v_a.y, v_b.x, v_b.y, value.get('length'), PRECISION);
+                  var v_b_new = GeometryUtils.extendLine(v_a.x, v_a.y, v_b.x, v_b.y, value.get("length"), PRECISION);
 
                   attributesFormData = attributesFormData.withMutations(function (attr) {
-                    attr.set(v_0 === v_a ? 'vertexTwo' : 'vertexOne', v_b.merge(v_b_new));
-                    attr.set('lineLength', value);
+                    attr.set(v_0 === v_a ? "vertexTwo" : "vertexOne", v_b.merge(v_b_new));
+                    attr.set("lineLength", value);
                   });
                   break;
                 }
-              case 'vertexOne':
-              case 'vertexTwo':
+              case "vertexOne":
+              case "vertexTwo":
                 {
                   attributesFormData = attributesFormData.withMutations(function (attr) {
                     attr.set(attributeName, attr.get(attributeName).merge(value));
 
-                    var newDistance = GeometryUtils.verticesDistance(attr.get('vertexOne'), attr.get('vertexTwo'));
+                    var newDistance = GeometryUtils.verticesDistance(attr.get("vertexOne"), attr.get("vertexTwo"));
 
-                    attr.mergeIn(['lineLength'], attr.get('lineLength').merge({
-                      'length': newDistance,
-                      '_length': convert(newDistance).from(_this2.context.catalog.unit).to(attr.get('lineLength').get('_unit'))
+                    attr.mergeIn(["lineLength"], attr.get("lineLength").merge({
+                      length: newDistance,
+                      _length: convert(newDistance).from(_this2.context.catalog.unit).to(attr.get("lineLength").get("_unit"))
                     }));
                   });
                   break;
@@ -230,10 +241,10 @@ var ElementEditor = function (_Component) {
             }
             break;
           }
-        case 'holes':
+        case "holes":
           {
             switch (attributeName) {
-              case 'offsetA':
+              case "offsetA":
                 {
                   var line = this.props.layer.lines.get(this.props.element.line);
 
@@ -249,10 +260,10 @@ var ElementEditor = function (_Component) {
 
                   var alpha = GeometryUtils.angleBetweenTwoPoints(x0, y0, x1, y1);
                   var lineLength = GeometryUtils.pointsDistance(x0, y0, x1, y1);
-                  var widthLength = this.props.element.properties.get('width').get('length');
+                  var widthLength = this.props.element.properties.get("width").get("length");
                   var halfWidthLength = widthLength / 2;
 
-                  var lengthValue = value.get('length');
+                  var lengthValue = value.get("length");
                   lengthValue = Math.max(lengthValue, 0);
                   lengthValue = Math.min(lengthValue, lineLength - widthLength);
 
@@ -262,7 +273,7 @@ var ElementEditor = function (_Component) {
                   var offset = GeometryUtils.pointPositionOnLineSegment(x0, y0, x1, y1, xp, yp);
 
                   var endAt = MathUtils.toFixedFloat(lineLength - lineLength * offset - halfWidthLength, PRECISION);
-                  var offsetUnit = attributesFormData.getIn(['offsetB', '_unit']);
+                  var offsetUnit = attributesFormData.getIn(["offsetB", "_unit"]);
 
                   var offsetB = new Map({
                     length: endAt,
@@ -270,19 +281,19 @@ var ElementEditor = function (_Component) {
                     _unit: offsetUnit
                   });
 
-                  attributesFormData = attributesFormData.set('offsetB', offsetB).set('offset', offset);
+                  attributesFormData = attributesFormData.set("offsetB", offsetB).set("offset", offset);
 
                   var offsetAttribute = new Map({
                     length: MathUtils.toFixedFloat(lengthValue, PRECISION),
-                    _unit: value.get('_unit'),
-                    _length: MathUtils.toFixedFloat(convert(lengthValue).from(this.context.catalog.unit).to(value.get('_unit')), PRECISION)
+                    _unit: value.get("_unit"),
+                    _length: MathUtils.toFixedFloat(convert(lengthValue).from(this.context.catalog.unit).to(value.get("_unit")), PRECISION)
                   });
 
                   attributesFormData = attributesFormData.set(attributeName, offsetAttribute);
 
                   break;
                 }
-              case 'offsetB':
+              case "offsetB":
                 {
                   var _line = this.props.layer.lines.get(this.props.element.line);
 
@@ -298,10 +309,10 @@ var ElementEditor = function (_Component) {
 
                   var _alpha = GeometryUtils.angleBetweenTwoPoints(_x, _y, _x2, _y2);
                   var _lineLength = GeometryUtils.pointsDistance(_x, _y, _x2, _y2);
-                  var _widthLength = this.props.element.properties.get('width').get('length');
+                  var _widthLength = this.props.element.properties.get("width").get("length");
                   var _halfWidthLength = _widthLength / 2;
 
-                  var _lengthValue = value.get('length');
+                  var _lengthValue = value.get("length");
                   _lengthValue = Math.max(_lengthValue, 0);
                   _lengthValue = Math.min(_lengthValue, _lineLength - _widthLength);
 
@@ -311,7 +322,7 @@ var ElementEditor = function (_Component) {
                   var _offset = GeometryUtils.pointPositionOnLineSegment(_x, _y, _x2, _y2, _xp, _yp);
 
                   var startAt = MathUtils.toFixedFloat(_lineLength * _offset - _halfWidthLength, PRECISION);
-                  var _offsetUnit = attributesFormData.getIn(['offsetA', '_unit']);
+                  var _offsetUnit = attributesFormData.getIn(["offsetA", "_unit"]);
 
                   var offsetA = new Map({
                     length: startAt,
@@ -319,12 +330,12 @@ var ElementEditor = function (_Component) {
                     _unit: _offsetUnit
                   });
 
-                  attributesFormData = attributesFormData.set('offsetA', offsetA).set('offset', _offset);
+                  attributesFormData = attributesFormData.set("offsetA", offsetA).set("offset", _offset);
 
                   var _offsetAttribute = new Map({
                     length: MathUtils.toFixedFloat(_lengthValue, PRECISION),
-                    _unit: value.get('_unit'),
-                    _length: MathUtils.toFixedFloat(convert(_lengthValue).from(this.context.catalog.unit).to(value.get('_unit')), PRECISION)
+                    _unit: value.get("_unit"),
+                    _length: MathUtils.toFixedFloat(convert(_lengthValue).from(this.context.catalog.unit).to(value.get("_unit")), PRECISION)
                   });
 
                   attributesFormData = attributesFormData.set(attributeName, _offsetAttribute);
@@ -336,7 +347,7 @@ var ElementEditor = function (_Component) {
                   attributesFormData = attributesFormData.set(attributeName, value);
                   break;
                 }
-            };
+            }
             break;
           }
         default:
@@ -351,14 +362,16 @@ var ElementEditor = function (_Component) {
     value: function updateProperty(propertyName, value) {
       var propertiesFormData = this.state.propertiesFormData;
 
-      propertiesFormData = propertiesFormData.setIn([propertyName, 'currentValue'], value);
+      propertiesFormData = propertiesFormData.setIn([propertyName, "currentValue"], value);
       this.setState({ propertiesFormData: propertiesFormData });
       this.save({ propertiesFormData: propertiesFormData });
     }
   }, {
     key: 'reset',
     value: function reset() {
-      this.setState({ propertiesFormData: this.initPropData(this.props.element, this.props.layer, this.props.state) });
+      this.setState({
+        propertiesFormData: this.initPropData(this.props.element, this.props.layer, this.props.state)
+      });
     }
   }, {
     key: 'save',
@@ -366,10 +379,9 @@ var ElementEditor = function (_Component) {
       var propertiesFormData = _ref2.propertiesFormData,
           attributesFormData = _ref2.attributesFormData;
 
-
       if (propertiesFormData) {
         var properties = propertiesFormData.map(function (data) {
-          return data.get('currentValue');
+          return data.get("currentValue");
         });
 
         this.context.projectActions.setProperties(properties);
@@ -377,17 +389,17 @@ var ElementEditor = function (_Component) {
 
       if (attributesFormData) {
         switch (this.props.element.prototype) {
-          case 'items':
+          case "items":
             {
               this.context.projectActions.setItemsAttributes(attributesFormData);
               break;
             }
-          case 'lines':
+          case "lines":
             {
               this.context.projectActions.setLinesAttributes(attributesFormData);
               break;
             }
-          case 'holes':
+          case "holes":
             {
               this.context.projectActions.setHolesAttributes(attributesFormData);
               break;
@@ -439,16 +451,24 @@ var ElementEditor = function (_Component) {
             { style: headActionStyle },
             React.createElement(
               'div',
-              { title: translator.t('Copy'), style: iconHeadStyle, onClick: function onClick(e) {
+              {
+                title: translator.t("Copy"),
+                style: iconHeadStyle,
+                onClick: function onClick(e) {
                   return _this3.copyProperties(element.properties);
-                } },
+                }
+              },
               React.createElement(MdContentCopy, null)
             ),
-            appState.get('clipboardProperties') && appState.get('clipboardProperties').size ? React.createElement(
+            appState.get("clipboardProperties") && appState.get("clipboardProperties").size ? React.createElement(
               'div',
-              { title: translator.t('Paste'), style: iconHeadStyle, onClick: function onClick(e) {
+              {
+                title: translator.t("Paste"),
+                style: iconHeadStyle,
+                onClick: function onClick(e) {
                   return _this3.pasteProperties();
-                } },
+                }
+              },
               React.createElement(MdContentPaste, null)
             ) : null
           )
@@ -458,8 +478,8 @@ var ElementEditor = function (_Component) {
               propertyName = _ref4[0],
               data = _ref4[1];
 
-          var currentValue = data.get('currentValue'),
-              configs = data.get('configs');
+          var currentValue = data.get("currentValue"),
+              configs = data.get("configs");
 
           var _catalog$getPropertyT = catalog.getPropertyType(configs.type),
               Editor = _catalog$getPropertyT.Editor;
@@ -476,7 +496,29 @@ var ElementEditor = function (_Component) {
             sourceElement: element,
             internalState: _this3.state
           });
-        })
+        }),
+        React.createElement(
+          'div',
+          { style: { display: "flex" } },
+          React.createElement(
+            Button,
+            {
+              onClick: this.duplicate,
+              style: { fontSize: 24, height: "40px" },
+              styleHover: { fontSize: 28, height: "40px" }
+            },
+            '\u2016'
+          ),
+          React.createElement(
+            Button,
+            {
+              onClick: this.remove,
+              style: { fontSize: 24, height: "40px" },
+              styleHover: { fontSize: 28, height: "40px" }
+            },
+            '\uD83D\uDDD1'
+          )
+        )
       );
     }
   }]);

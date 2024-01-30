@@ -28,25 +28,25 @@ function HoleAttributesEditor(_ref, _ref2) {
     React.createElement(PropertyString, _extends({
       value: name,
       onUpdate: function onUpdate(mapped) {
-        return _onUpdate('name', mapped);
+        return _onUpdate("name", mapped);
       },
-      configs: { label: 'Nome' },
+      configs: { label: "Name" },
       state: state
     }, rest)),
     React.createElement(PropertyLengthMeasure, _extends({
       value: offsetA,
       onUpdate: function onUpdate(mapped) {
-        return _onUpdate('offsetA', mapped);
+        return _onUpdate("offsetA", mapped);
       },
-      configs: { label: 'Offset 1', min: 0, max: Infinity, precision: 2 },
+      configs: { label: "Offset 1", min: 0, max: Infinity, precision: 2 },
       state: state
     }, rest)),
     React.createElement(PropertyLengthMeasure, _extends({
       value: offsetB,
       onUpdate: function onUpdate(mapped) {
-        return _onUpdate('offsetB', mapped);
+        return _onUpdate("offsetB", mapped);
       },
-      configs: { label: 'Offset 2', min: 0, max: Infinity, precision: 2 },
+      configs: { label: "Offset 2", min: 0, max: Infinity, precision: 2 },
       state: state
     }, rest))
   );
