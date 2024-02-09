@@ -59,11 +59,21 @@ export default {
         'none': false,
         'yes':  true
       }
+    },
+    flip_vertical: {
+      label: 'flip vertical',
+      type: 'checkbox',
+      defaultValue: false,
+      values: {
+        'none': false,
+        'yes':  true
+      }
     }
   },
 
   render2D: function (element, layer, scene) {
-    let flip = element.properties.get('flip_orizzontal');
+    let fliph = element.properties.get('flip_orizzontal');
+   let flipv = element.properties.get('flip_vertical');
     let holeWidth = element.properties.get('width').get('length');
     let holePath = `M${0} ${ -EPSILON}  L${holeWidth} ${-EPSILON}  L${holeWidth} ${EPSILON}  L${0} ${EPSILON}  z`;
     let arcPath = `M${0},${0}  A${holeWidth},${holeWidth} 0 0,1 ${holeWidth},${holeWidth}`;
@@ -71,9 +81,9 @@ export default {
     let arcStyle = element.selected ? STYLE_ARC_SELECTED : STYLE_ARC_BASE;
     let length = element.properties.get('width').get('length');
 
-    if(flip == false) {
+    if(fliph == false) {
       return (
-        <g transform={`translate(${-length / 2}, 0)`}>
+        <g transform={`translate(${-length / 2}, 0) ${flipv ? "scale(-1, 1)" : ""}`}>
           <path d={arcPath} style={arcStyle} transform={`translate(${0},${holeWidth}) scale(${1},${-1}) rotate(${0})`}/>
           <line x1={0} y1={holeWidth - EPSILON} x2={0} y2={0 - EPSILON} style={holeStyle} transform={`scale(${-1},${1})`}/>
           <path d={holePath} style={holeStyle}/>
@@ -82,7 +92,7 @@ export default {
     }
     else{
       return (
-        <g transform={`translate(${-length / 2}, 0)`}>
+        <g transform={`translate(${-length / 2}, 0) ${flipv ? "scale(-1, 1)" : ""}`}>
           <path d={arcPath} style={arcStyle} transform={`translate(${0},${-holeWidth}) scale(${1},${1}) rotate(${0})`}/>
           <line x1={0} y1={-holeWidth - EPSILON} x2={0} y2={0 - EPSILON} style={holeStyle} transform={`scale(${-1},${1})`}/>
           <path d={holePath} style={holeStyle}/>
