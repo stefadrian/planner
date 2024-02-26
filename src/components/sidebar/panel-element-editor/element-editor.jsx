@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Map, fromJS } from 'immutable';
-import AttributesEditor from './attributes-editor/attributes-editor';
-import { GeometryUtils, MathUtils } from '../../../utils/export';
-import * as SharedStyle from '../../../shared-style';
-import convert from 'convert-units';
-import { MdContentCopy, MdContentPaste } from 'react-icons/md';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Map, fromJS } from "immutable";
+import AttributesEditor from "./attributes-editor/attributes-editor";
+import { GeometryUtils, MathUtils } from "../../../utils/export";
+import * as SharedStyle from "../../../shared-style";
+import convert from "convert-units";
+import { MdContentCopy, MdDelete } from "react-icons/md";
 import Button from "../../style/button";
 
 const PRECISION = 2;
@@ -14,7 +14,7 @@ const attrPorpSeparatorStyle = {
   margin: "0.5em 0.25em 0.5em 0",
   border: "2px solid " + SharedStyle.SECONDARY_COLOR.alt,
   position: "relative",
-  height: "2.5em",
+  height: "2rem",
   borderRadius: "2px",
 };
 
@@ -29,7 +29,7 @@ const iconHeadStyle = {
   margin: "-3px 4px 0px 0px",
   padding: 0,
   cursor: "pointer",
-  fontSize: "1.4em",
+  fontSize: "1.5rem",
 };
 
 export default class ElementEditor extends Component {
@@ -464,27 +464,6 @@ export default class ElementEditor extends Component {
           attributeFormData={attributesFormData}
           state={appState}
         />
-        <div style={attrPorpSeparatorStyle}>
-          <div style={headActionStyle}>
-            <div
-              title={translator.t("Copy")}
-              style={iconHeadStyle}
-              onClick={(e) => this.copyProperties(element.properties)}
-            >
-              <MdContentCopy />
-            </div>
-            {appState.get("clipboardProperties") &&
-            appState.get("clipboardProperties").size ? (
-              <div
-                title={translator.t("Paste")}
-                style={iconHeadStyle}
-                onClick={(e) => this.pasteProperties()}
-              >
-                <MdContentPaste />
-              </div>
-            ) : null}
-          </div>
-        </div>
         {propertiesFormData.entrySeq().map(([propertyName, data]) => {
           let currentValue = data.get("currentValue"),
             configs = data.get("configs");
@@ -504,21 +483,23 @@ export default class ElementEditor extends Component {
             />
           );
         })}
-        <div style={{ display: "flex" }}>
-          <Button
-            onClick={this.duplicate}
-            style={{ fontSize: 24, height: "40px" }}
-            styleHover={{ fontSize: 28, height: "40px" }}
-          >
-            &#8214;
-          </Button>
-          <Button
-            onClick={this.remove}
-            style={{ fontSize: 24, height: "40px" }}
-            styleHover={{ fontSize: 28, height: "40px" }}
-          >
-            &#128465;
-          </Button>
+          <div style={attrPorpSeparatorStyle}>
+            <div style={headActionStyle}>
+              <div
+                title={translator.t("Copy")}
+                style={iconHeadStyle}
+                onClick={this.duplicate}
+              >
+                <MdContentCopy />
+              </div>
+              <div
+                title={translator.t("Delete")}
+                style={iconHeadStyle}
+                onClick={this.remove}
+              >
+                <MdDelete />
+              </div>
+            </div>
         </div>
       </div>
     );
@@ -528,7 +509,7 @@ export default class ElementEditor extends Component {
 ElementEditor.propTypes = {
   state: PropTypes.object.isRequired,
   element: PropTypes.object.isRequired,
-  layer: PropTypes.object.isRequired
+  layer: PropTypes.object.isRequired,
 };
 
 ElementEditor.contextTypes = {
