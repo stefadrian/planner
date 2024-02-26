@@ -10,14 +10,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Map, fromJS } from 'immutable';
-import AttributesEditor from './attributes-editor/attributes-editor';
-import { GeometryUtils, MathUtils } from '../../../utils/export';
-import * as SharedStyle from '../../../shared-style';
-import convert from 'convert-units';
-import { MdContentCopy, MdContentPaste } from 'react-icons/md';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Map, fromJS } from "immutable";
+import AttributesEditor from "./attributes-editor/attributes-editor";
+import { GeometryUtils, MathUtils } from "../../../utils/export";
+import * as SharedStyle from "../../../shared-style";
+import convert from "convert-units";
+import { MdContentCopy, MdDelete } from "react-icons/md";
 import Button from "../../style/button";
 
 var PRECISION = 2;
@@ -26,7 +26,7 @@ var attrPorpSeparatorStyle = {
   margin: "0.5em 0.25em 0.5em 0",
   border: "2px solid " + SharedStyle.SECONDARY_COLOR.alt,
   position: "relative",
-  height: "2.5em",
+  height: "2rem",
   borderRadius: "2px"
 };
 
@@ -41,7 +41,7 @@ var iconHeadStyle = {
   margin: "-3px 4px 0px 0px",
   padding: 0,
   cursor: "pointer",
-  fontSize: "1.4em"
+  fontSize: "1.5rem"
 };
 
 var ElementEditor = function (_Component) {
@@ -63,24 +63,24 @@ var ElementEditor = function (_Component) {
   }
 
   _createClass(ElementEditor, [{
-    key: 'remove',
+    key: "remove",
     value: function remove() {
       this.context.projectActions.remove();
     }
   }, {
-    key: 'duplicate',
+    key: "duplicate",
     value: function duplicate() {
       this.context.projectActions.duplicate();
     }
   }, {
-    key: 'shouldComponentUpdate',
+    key: "shouldComponentUpdate",
     value: function shouldComponentUpdate(nextProps, nextState) {
       if (this.state.attributesFormData.hashCode() !== nextState.attributesFormData.hashCode() || this.state.propertiesFormData.hashCode() !== nextState.propertiesFormData.hashCode() || this.props.state.clipboardProperties.hashCode() !== nextProps.state.clipboardProperties.hashCode()) return true;
 
       return false;
     }
   }, {
-    key: 'componentWillReceiveProps',
+    key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(_ref) {
       var element = _ref.element,
           layer = _ref.layer,
@@ -98,7 +98,7 @@ var ElementEditor = function (_Component) {
       });
     }
   }, {
-    key: 'initAttrData',
+    key: "initAttrData",
     value: function initAttrData(element, layer, state) {
       element = _typeof(element.misc) === "object" ? element.set("misc", new Map(element.misc)) : element;
 
@@ -167,7 +167,7 @@ var ElementEditor = function (_Component) {
       }
     }
   }, {
-    key: 'initPropData',
+    key: "initPropData",
     value: function initPropData(element, layer, state) {
       var catalog = this.context.catalog;
 
@@ -184,7 +184,7 @@ var ElementEditor = function (_Component) {
       return new Map(mapped);
     }
   }, {
-    key: 'updateAttribute',
+    key: "updateAttribute",
     value: function updateAttribute(attributeName, value) {
       var _this2 = this;
 
@@ -358,7 +358,7 @@ var ElementEditor = function (_Component) {
       this.save({ attributesFormData: attributesFormData });
     }
   }, {
-    key: 'updateProperty',
+    key: "updateProperty",
     value: function updateProperty(propertyName, value) {
       var propertiesFormData = this.state.propertiesFormData;
 
@@ -367,14 +367,14 @@ var ElementEditor = function (_Component) {
       this.save({ propertiesFormData: propertiesFormData });
     }
   }, {
-    key: 'reset',
+    key: "reset",
     value: function reset() {
       this.setState({
         propertiesFormData: this.initPropData(this.props.element, this.props.layer, this.props.state)
       });
     }
   }, {
-    key: 'save',
+    key: "save",
     value: function save(_ref2) {
       var propertiesFormData = _ref2.propertiesFormData,
           attributesFormData = _ref2.attributesFormData;
@@ -408,17 +408,17 @@ var ElementEditor = function (_Component) {
       }
     }
   }, {
-    key: 'copyProperties',
+    key: "copyProperties",
     value: function copyProperties(properties) {
       this.context.projectActions.copyProperties(properties);
     }
   }, {
-    key: 'pasteProperties',
+    key: "pasteProperties",
     value: function pasteProperties() {
       this.context.projectActions.pasteProperties();
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this3 = this;
 
@@ -435,7 +435,7 @@ var ElementEditor = function (_Component) {
 
 
       return React.createElement(
-        'div',
+        "div",
         null,
         React.createElement(AttributesEditor, {
           element: element,
@@ -443,36 +443,6 @@ var ElementEditor = function (_Component) {
           attributeFormData: attributesFormData,
           state: appState
         }),
-        React.createElement(
-          'div',
-          { style: attrPorpSeparatorStyle },
-          React.createElement(
-            'div',
-            { style: headActionStyle },
-            React.createElement(
-              'div',
-              {
-                title: translator.t("Copy"),
-                style: iconHeadStyle,
-                onClick: function onClick(e) {
-                  return _this3.copyProperties(element.properties);
-                }
-              },
-              React.createElement(MdContentCopy, null)
-            ),
-            appState.get("clipboardProperties") && appState.get("clipboardProperties").size ? React.createElement(
-              'div',
-              {
-                title: translator.t("Paste"),
-                style: iconHeadStyle,
-                onClick: function onClick(e) {
-                  return _this3.pasteProperties();
-                }
-              },
-              React.createElement(MdContentPaste, null)
-            ) : null
-          )
-        ),
         propertiesFormData.entrySeq().map(function (_ref3) {
           var _ref4 = _slicedToArray(_ref3, 2),
               propertyName = _ref4[0],
@@ -498,25 +468,29 @@ var ElementEditor = function (_Component) {
           });
         }),
         React.createElement(
-          'div',
-          { style: { display: "flex" } },
+          "div",
+          { style: attrPorpSeparatorStyle },
           React.createElement(
-            Button,
-            {
-              onClick: this.duplicate,
-              style: { fontSize: 24, height: "40px" },
-              styleHover: { fontSize: 28, height: "40px" }
-            },
-            '\u2016'
-          ),
-          React.createElement(
-            Button,
-            {
-              onClick: this.remove,
-              style: { fontSize: 24, height: "40px" },
-              styleHover: { fontSize: 28, height: "40px" }
-            },
-            '\uD83D\uDDD1'
+            "div",
+            { style: headActionStyle },
+            React.createElement(
+              "div",
+              {
+                title: translator.t("Copy"),
+                style: iconHeadStyle,
+                onClick: this.duplicate
+              },
+              React.createElement(MdContentCopy, null)
+            ),
+            React.createElement(
+              "div",
+              {
+                title: translator.t("Delete"),
+                style: iconHeadStyle,
+                onClick: this.remove
+              },
+              React.createElement(MdDelete, null)
+            )
           )
         )
       );
