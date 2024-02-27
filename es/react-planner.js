@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
+import Immutable from 'immutable';
 import actions from "./actions/export";
 import Catalog from "./catalog/catalog";
 import { Content, FooterBarComponents, SidebarComponents, ToolbarComponents } from "./components/export";
@@ -42,10 +42,15 @@ var wrapperStyleToolbarHorizontal = {
 var ReactPlanner = function (_Component) {
   _inherits(ReactPlanner, _Component);
 
-  function ReactPlanner() {
+  function ReactPlanner(props) {
     _classCallCheck(this, ReactPlanner);
 
-    return _possibleConstructorReturn(this, (ReactPlanner.__proto__ || Object.getPrototypeOf(ReactPlanner)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (ReactPlanner.__proto__ || Object.getPrototypeOf(ReactPlanner)).call(this, props));
+
+    _this.state = {
+      selected: false // Initialize selected in state
+    };
+    return _this;
   }
 
   _createClass(ReactPlanner, [{
@@ -88,6 +93,16 @@ var ReactPlanner = function (_Component) {
       if (!catalogReady) {
         projectActions.initCatalog(catalog);
       }
+      var extractedState = stateExtractor(state);
+      var selectedLayer = extractedState.getIn(["scene", "selectedLayer"]);
+      var selected = extractedState.getIn(["scene", "layers", selectedLayer, "selected"]) || Immutable.Map();
+      this.updateSelected(!!selected.get("areas").size || !!selected.get("lines").size || !!selected.get("items").size || !!selected.get("vertices").size);
+    }
+  }, {
+    key: "updateSelected",
+    value: function updateSelected(newSelected, selected) {
+      console.log("stef newSelected", newSelected);
+      this.setState({ selected: newSelected });
     }
   }, {
     key: "render",
@@ -105,15 +120,16 @@ var ReactPlanner = function (_Component) {
           disableToolBar = _props2$disableToolBa === undefined ? false : _props2$disableToolBa,
           _props2$toolbarProps = _props2.toolbarProps,
           toolbarProps = _props2$toolbarProps === undefined ? {
-        orientation: 'vertical'
+        orientation: "vertical"
       } : _props2$toolbarProps,
           props = _objectWithoutProperties(_props2, ["width", "height", "state", "stateExtractor", "disableSideBar", "disableFooterBar", "disableToolBar", "toolbarProps"]);
 
       var toolbarW = 50;
+      var selected = this.state.selected;
+
 
       var contentW = width;
-
-      if (!disableSideBar) {
+      if (!disableSideBar && selected) {
         contentW -= sidebarW;
       }
 
@@ -122,14 +138,14 @@ var ReactPlanner = function (_Component) {
       var sidebarH = height;
 
       if (!disableFooterBar) {
-        if (toolbarProps.orientation === 'vertical') {
+        if (toolbarProps.orientation === "vertical") {
           toolbarH -= footerBarH;
         }
         contentH -= footerBarH;
         sidebarH -= footerBarH;
       }
 
-      if (toolbarProps.orientation === 'horizontal') {
+      if (toolbarProps.orientation === "horizontal") {
         toolbarW = contentW;
         toolbarH = 70;
         if (!disableToolBar) {
@@ -144,7 +160,7 @@ var ReactPlanner = function (_Component) {
       var extractedState = stateExtractor(state);
 
       var wrapperCss = wrapperStyle;
-      if (toolbarProps.orientation === 'horizontal') {
+      if (toolbarProps.orientation === "horizontal") {
         wrapperCss = _extends({}, wrapperStyle, wrapperStyleToolbarHorizontal);
       }
 
@@ -166,7 +182,7 @@ var ReactPlanner = function (_Component) {
             return event.preventDefault();
           }
         })),
-        !disableSideBar && React.createElement(Sidebar, _extends({
+        !disableSideBar && selected && React.createElement(Sidebar, _extends({
           width: sidebarW,
           height: sidebarH,
           state: extractedState
