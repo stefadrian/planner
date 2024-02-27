@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
+import Immutable from 'immutable';
 import actions from "./actions/export";
 import Catalog from "./catalog/catalog";
 import { Content, FooterBarComponents, SidebarComponents, ToolbarComponents } from "./components/export";
@@ -27,6 +27,12 @@ const wrapperStyleToolbarHorizontal = {
 };
 
 class ReactPlanner extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: false, // Initialize selected in state
+    };
+  }
   getChildContext() {
     return {
       ...objectsMap(actions, (actionNamespace) => this.props[actionNamespace]),
@@ -49,6 +55,21 @@ class ReactPlanner extends Component {
     if (!catalogReady) {
       projectActions.initCatalog(catalog);
     }
+    let extractedState = stateExtractor(state);
+    let selectedLayer = extractedState.getIn(["scene", "selectedLayer"]);
+    let selected =
+      extractedState.getIn(["scene", "layers", selectedLayer, "selected"]) ||
+      Immutable.Map();
+    this.updateSelected(
+      !!selected.get("areas").size ||
+        !!selected.get("lines").size ||
+        !!selected.get("items").size ||
+        !!selected.get("vertices").size
+    );
+  }
+  updateSelected(newSelected, selected) {
+    console.log("stef newSelected", newSelected);
+    this.setState({ selected: newSelected });
   }
 
   render() {
@@ -61,16 +82,15 @@ class ReactPlanner extends Component {
       disableFooterBar = false,
       disableToolBar = false,
       toolbarProps = {
-        orientation: 'vertical'
+        orientation: "vertical",
       },
       ...props
     } = this.props;
-
     let toolbarW = 50;
+    const { selected } = this.state;
 
     let contentW = width;
-
-    if (!disableSideBar) {
+    if (!disableSideBar && selected) {
       contentW -= sidebarW;
     }
 
@@ -79,41 +99,42 @@ class ReactPlanner extends Component {
     let sidebarH = height;
 
     if (!disableFooterBar) {
-      if (toolbarProps.orientation === 'vertical') { toolbarH -= footerBarH; }
+      if (toolbarProps.orientation === "vertical") {
+        toolbarH -= footerBarH;
+      }
       contentH -= footerBarH;
       sidebarH -= footerBarH;
     }
 
-
-    if (toolbarProps.orientation === 'horizontal') {
+    if (toolbarProps.orientation === "horizontal") {
       toolbarW = contentW;
       toolbarH = 70;
-      if(!disableToolBar){
+      if (!disableToolBar) {
         contentH -= toolbarH;
       }
-    }else{
-      if(!disableToolBar){
+    } else {
+      if (!disableToolBar) {
         contentW -= toolbarW;
       }
     }
 
     let extractedState = stateExtractor(state);
 
-    let wrapperCss = wrapperStyle
-    if (toolbarProps.orientation === 'horizontal') {
-      wrapperCss = { ...wrapperStyle, ...wrapperStyleToolbarHorizontal }
+    let wrapperCss = wrapperStyle;
+    if (toolbarProps.orientation === "horizontal") {
+      wrapperCss = { ...wrapperStyle, ...wrapperStyleToolbarHorizontal };
     }
 
     return (
       <div style={{ ...wrapperCss, height }}>
-      {!disableToolBar && (
-        <Toolbar
-          width={toolbarW}
-          height={toolbarH}
-          state={extractedState}
-          toolbarProps={toolbarProps}
-          {...props}
-        />
+        {!disableToolBar && (
+          <Toolbar
+            width={toolbarW}
+            height={toolbarH}
+            state={extractedState}
+            toolbarProps={toolbarProps}
+            {...props}
+          />
         )}
         <Content
           width={contentW}
@@ -122,7 +143,7 @@ class ReactPlanner extends Component {
           {...props}
           onWheel={(event) => event.preventDefault()}
         />
-        {!disableSideBar && (
+        {!disableSideBar && selected && (
           <Sidebar
             width={sidebarW}
             height={sidebarH}
