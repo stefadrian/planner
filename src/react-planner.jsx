@@ -60,15 +60,17 @@ class ReactPlanner extends Component {
     let selected =
       extractedState.getIn(["scene", "layers", selectedLayer, "selected"]) ||
       Immutable.Map();
+      
+
     this.updateSelected(
       !!selected.get("areas").size ||
         !!selected.get("lines").size ||
         !!selected.get("items").size ||
+        !!selected.get("holes").size ||
         !!selected.get("vertices").size
     );
   }
   updateSelected(newSelected, selected) {
-    console.log("stef newSelected", newSelected);
     this.setState({ selected: newSelected });
   }
 
